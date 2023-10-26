@@ -48,7 +48,7 @@
         },
         async mounted() {
             console.log('hi...')
-            // await this.jwtFlow()
+            await this.jwtFlow()
             console.log('in we go.')
             this.currentLedger()
             
