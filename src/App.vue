@@ -42,7 +42,7 @@
                     Landing: false,
                     Viewer: false
                 },
-                client: new XrplClient(),
+                client: new XrplClient('wss://s.altnet.rippletest.net:51233'),
                 signedIn: false
             }
         },
