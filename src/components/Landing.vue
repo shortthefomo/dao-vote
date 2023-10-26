@@ -76,8 +76,7 @@ import { XrplClient } from 'xrpl-client'
             console.log('landing mounted...')
             // await this.fetchStorage()
             if (this.$store.getters.getAccount != '') {
-                console.log('landing fetchData...')
-                await this.fetchData()
+                console.log('landing logged in...')
             }
 
             await this.connectWebsocket()
@@ -212,30 +211,6 @@ import { XrplClient } from 'xrpl-client'
             ledgerEpoch() {
                 const unix_time = Date.now() 
                 return Math.floor((unix_time) / 1000) - 946684800
-            },
-            async fetchData() {
-                if (this.$store.getters.getAccount == '') { return }
-                this.isLoading = true
-
-                // const payload = {
-                //     'id': 8,
-                //     'command': 'account_objects',
-                //     'account': this.$store.getters.getAccount,
-                //     'ledger_index': 'validated',
-                //     'limit': 1000
-                // }
-                // let res = await this.client.send(payload)
-                
-                this.client.send({
-                    'command': 'subscribe',
-                    'streams': ['validations']
-                })
-
-                this.client.on('validation', async (event) => {
-                    log(event)
-                })
-
-                this.isLoading = false
             },
             sortTable(col) {
                 if (this.sortColumn === col) {
