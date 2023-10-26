@@ -238,7 +238,7 @@
                     const data  = JSON.parse(message.data)
                     if (data[self.validator_key] !== undefined) {
                         self.validator_data = data[self.validator_key]
-                        console.log(self.validator_data)
+                        // console.log(self.validator_data)
                         self.votes = []
                         for (const [key, value] of Object.entries(self.validator_data.votable_amendments.nay)) {
                             self.votes.push({
