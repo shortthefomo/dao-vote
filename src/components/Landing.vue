@@ -143,7 +143,7 @@ import { XrplClient } from 'xrpl-client'
             async connectWebsocket() {
                 const self = this
                 
-                this.socket = new WebSocket('ws://localhost:5533')
+                this.socket = new WebSocket('wss://vote-backend.panicbot.xyz')
                 console.log('new connection to socket')
                 this.reconnect_socket++
 
