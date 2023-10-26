@@ -16,6 +16,10 @@ import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
   plugins: [vue()],
+  server: {
+    strictPort: true,
+    port: 3016,
+  },
   define: {
     'process.env': {}
   }
