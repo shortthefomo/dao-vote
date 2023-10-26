@@ -51,7 +51,8 @@
             await this.jwtFlow()
             console.log('in we go.')
             this.currentLedger()
-            
+            await this.getStoreage()
+
             // if (this.components.Landing) { return }
             
             this.components.Landing = true
@@ -137,6 +138,20 @@
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
                     })
                     .catch(e => console.log('Error:', e.message))
+            },
+            async getStoreage() {
+                console.log('getting store value')
+                if (this.$store.getters.getStorage !== undefined && Object.keys(this.$store.getters.getStorage).length > 0) {
+                    return this.$store.getters.getStorage
+                }
+                const data = await this.Sdk.storage.get()
+                console.log('fetch xumm storge', data)
+                this.$store.dispatch('setStorage', data)
+			    return data
+            },
+            async setStorage(data) {
+                const storageSet = await this.Sdk.storage.set(data)
+                this.$store.dispatch('setStorage', data)
             }
         }
     }

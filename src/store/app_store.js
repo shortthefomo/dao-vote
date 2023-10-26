@@ -8,7 +8,8 @@ export const AppStore = {
         },
         account: '',
         user_token: '',
-        ledger: 0
+        ledger: 0,
+        data: {}
     }),
     actions: {
         xummTokenData({commit}, data) {
@@ -22,6 +23,9 @@ export const AppStore = {
         },
         setLedger({commit}, ledger) {
             commit('LEDGER', ledger)
+        },
+        setStorage({commit}, data) {
+            commit('STORE', data)
         }
     },
     mutations: {
@@ -36,6 +40,9 @@ export const AppStore = {
         },
         LEDGER(state, ledger) {
             state.ledger = ledger
+        },
+        STORE(state, data) {
+            state.data = data
         }
     },
     getters: {
@@ -53,6 +60,9 @@ export const AppStore = {
         },
         getLedger: state => {
             return state.ledger
-        }
+        },
+        getStoreage: state => {
+            return state.data
+        },
     }
 }
