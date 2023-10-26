@@ -101,18 +101,9 @@
         methods: {
             async voteYay() {
                 console.log('voteYay', this.selected_vote)
-                const tokenData = this.$store.getters.getXummTokenData
-                if (tokenData.nodetype !== 'TESTNET') { return }
-                const servers = [tokenData.nodewss]
-                if (tokenData.nodetype == 'MAINNET') {
-                    servers.unshift('wss://node.panicbot.xyz')
-                }
-                console.log('servers', servers)
-                const client = new XrplClient(servers)
-
                 const Memos =[{
                     Memo: {
-                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: false}), 'utf-8').toString('hex').toUpperCase(),
+                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: false }), 'utf-8').toString('hex').toUpperCase(),
                         MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
                     }
                 }]
@@ -124,9 +115,35 @@
                 }
 
                 console.log('payload', payload)
-                const request  = { txjson: payload }
-                console.log('request', request)
+                this.submitVote({ txjson: payload })
+            },
+            async voteNay() {
+                console.log('voteNay', this.selected_vote)
+                const Memos =[{
+                    Memo: {
+                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: true }), 'utf-8').toString('hex').toUpperCase(),
+                        MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
+                    }
+                }]
+                    
+                const payload = {
+                    TransactionType: 'AccountSet',
+                    Account: this.$store.getters.getAccount,
+                    Memos
+                }
 
+                console.log('payload', payload)
+                this.submitVote({ txjson: payload })
+            },
+            async submitVote(request) {
+                const tokenData = this.$store.getters.getXummTokenData
+                if (tokenData.nodetype !== 'TESTNET') { return }
+                const servers = [tokenData.nodewss]
+                if (tokenData.nodetype == 'MAINNET') {
+                    servers.unshift('wss://node.panicbot.xyz')
+                }
+                console.log('servers', servers)
+                const client = new XrplClient(servers)
                 const self = this
                 const subscription = await this.Sdk.payload.createAndSubscribe(request, async event => {
                     console.log('New payload event:', event.data)
@@ -134,11 +151,13 @@
                     if (event.data.signed === true) {
                         console.log('Woohoo! The sign request was signed :)')
                         await self.reloadData()
+                        client.close()
                         return event.data
                     }
 
                     if (event.data.signed === false) {
                         console.log('The sign request was rejected :(')
+                        client.close()
                         return false
                     }
                 })
@@ -150,10 +169,6 @@
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
                     })
                     .catch(e => console.log('Error:', e.message))
-
-            },
-            voteNay() {
-                console.log('voteNay', this.selected_vote)
             },
             highlights(amendment) {
                 if (this.selected_vote.includes(amendment.hash)) {
