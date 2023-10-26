@@ -101,8 +101,13 @@ import { XrplClient } from 'xrpl-client'
             voteYay() {
                 console.log('voteYay', this.selected_vote)
                 const tokenData = this.$store.getters.getXummTokenData
-                console.log(tokenData)
-                console.log('nodetype', tokenData.nodetype)
+                if (tokenData.nodetype !== 'TESTNET') { return }
+                const servers = [tokenData.nodewss]
+                if (tokenData.nodetype == 'MAINNET') {
+                    servers.unshift('wss://node.panicbot.xyz')
+                }
+                console.log('servers', servers)
+                client = new XrplClient(servers)
             },
             voteNay() {
                 console.log('voteNay', this.selected_vote)
