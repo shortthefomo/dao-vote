@@ -55,7 +55,8 @@
 </template>
 
 <script>
-import { XrplClient } from 'xrpl-client'
+    import { XrplClient } from 'xrpl-client'
+    import { Buffer } from 'buffer'
 
     const xapp = window.xAppSdk
 
