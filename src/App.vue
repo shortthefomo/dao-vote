@@ -102,6 +102,7 @@
                 console.log('wss servers', servers)
                 
                 this.client = new XrplClient(servers)
+                await this.jwtSignIn()
             },
             async jwtSignIn() {
                 const self = this
