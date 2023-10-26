@@ -98,7 +98,7 @@ import { XrplClient } from 'xrpl-client'
             }
         },
         methods: {
-            voteYay() {
+            async voteYay() {
                 console.log('voteYay', this.selected_vote)
                 const tokenData = this.$store.getters.getXummTokenData
                 if (tokenData.nodetype !== 'TESTNET') { return }
@@ -107,7 +107,50 @@ import { XrplClient } from 'xrpl-client'
                     servers.unshift('wss://node.panicbot.xyz')
                 }
                 console.log('servers', servers)
-                client = new XrplClient(servers)
+                const client = new XrplClient(servers)
+
+                const Memos = Object.keys(data.rawResultsNamed).map(k => {
+                    return {
+                        Memo: {
+                            MemoData: Buffer.from(JSON.toString({amendment_vote: this.selected_vote, position: false}), 'utf-8').toString('hex').toUpperCase(),
+                            MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
+                        }
+                    }
+                })
+                const payload = {
+                    TransactionType: 'AccountSet',
+                    Account: this.$store.getters.getAccount,
+                    Memos
+                }
+
+                console.log('payload', payload)
+                const request  = { txjson: payload }
+                console.log('request', request)
+
+                const self = this
+                const subscription = await this.Sdk.payload.createAndSubscribe(request, async event => {
+                    console.log('New payload event:', event.data)
+
+                    if (event.data.signed === true) {
+                        console.log('Woohoo! The sign request was signed :)')
+                        await self.reloadData()
+                        return event.data
+                    }
+
+                    if (event.data.signed === false) {
+                        console.log('The sign request was rejected :(')
+                        return false
+                    }
+                })
+                console.log('setSignerList', subscription)
+
+                xapp.openSignRequest({ uuid: subscription.created.uuid })
+                    .then(d => {
+                        // d (returned value) can be Error or return data:
+                        console.log('openSignRequest response:', d instanceof Error ? d.message : d)
+                    })
+                    .catch(e => console.log('Error:', e.message))
+
             },
             voteNay() {
                 console.log('voteNay', this.selected_vote)
