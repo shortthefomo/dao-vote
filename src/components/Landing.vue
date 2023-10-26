@@ -100,7 +100,9 @@ import { XrplClient } from 'xrpl-client'
         methods: {
             voteYay() {
                 console.log('voteYay', this.selected_vote)
-                console.log(this.$store.getters.getXummTokenData)
+                const tokenData = this.$store.getters.getXummTokenData
+                console.log(tokenData)
+                console.log('nodetype', tokenData.nodetype)
             },
             voteNay() {
                 console.log('voteNay', this.selected_vote)
