@@ -57,7 +57,8 @@
 <script>
     import { XrplClient } from 'xrpl-client'
     import { Buffer } from 'buffer'
-
+    // const codec = require('ripple-address-codec')
+    import { codec } from('ripple-address-codec')
     const xapp = window.xAppSdk
 
     export default {
@@ -170,6 +171,9 @@
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
                     })
                     .catch(e => console.log('Error:', e.message))
+            },
+            setValidator(key) {
+                Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
             },
             highlights(amendment) {
                 if (this.selected_vote.includes(amendment.hash)) {

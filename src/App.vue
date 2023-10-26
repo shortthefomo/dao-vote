@@ -102,6 +102,7 @@
                 
                 this.client = new XrplClient(servers)
                 await this.jwtSignIn()
+                await this.accountInfo()
             },
             async jwtSignIn() {
                 const self = this
@@ -139,20 +140,45 @@
                     })
                     .catch(e => console.log('Error:', e.message))
             },
-            async getStoreage() {
-                console.log('getting store value')
-                if (this.$store.getters.getStorage !== undefined && Object.keys(this.$store.getters.getStorage).length > 0) {
-                    return this.$store.getters.getStorage
+            async accountInfo() {
+                const payload = {
+                    'id': 1,
+                    'command': 'account_info',
+                    'account': this.$store.getters.getAccount,
+                    'ledger_index': 'validated'
                 }
-                const data = await this.Sdk.storage.get()
-                console.log('fetch xumm storge', data)
-                this.$store.dispatch('setStorage', data)
-			    return data
+                let res = await this.client.send(payload)
+                console.log('accountInfo', res)
+                // this.$store.dispatch('setAccountData', res.account_data)
+
+                // const account_data = this.$store.getters.getAccountData
+                // console.log('getAccountData', account_data)
+                // const flags = flagNames(account_data.LedgerEntryType, account_data.Flags)
+                // console.log('flags', flags)
+
+                // // check if master key enabled.
+                // if (flags.includes('lsfDisableMaster')) {
+                //     this.masterKey = false
+                //     console.log('masterkey disabled')
+                // }
+                // else {
+                //     this.masterKey = true
+                //     console.log('masterkey enabled')
+                // }
+
+                // if ('RegularKey' in account_data) {
+                //     this.regularKeyAddress = account_data.RegularKey
+                //     this.regularKey = true
+                // }
+                // else {
+                //     this.regularKeyAddress = null
+                //     this.regularKey = false
+                // }
+
+                // const tokenData = this.$store.getters.getXummTokenData
+                // this.accountAccess = tokenData.accountaccess
+                // console.log('this.accountAccess', this.accountAccess)
             },
-            async setStorage(data) {
-                const storageSet = await this.Sdk.storage.set(data)
-                this.$store.dispatch('setStorage', data)
-            }
         }
     }
 </script>
