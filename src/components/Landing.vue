@@ -112,7 +112,7 @@
 
                 const Memos =[{
                     Memo: {
-                        MemoData: Buffer.from(JSON.stringify({amendment_vote: this.selected_vote, position: false}), 'utf-8').toString('hex').toUpperCase(),
+                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: false}), 'utf-8').toString('hex').toUpperCase(),
                         MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
                     }
                 }]
