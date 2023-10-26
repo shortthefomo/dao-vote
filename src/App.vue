@@ -51,7 +51,6 @@
             await this.jwtFlow()
             console.log('in we go.')
             this.currentLedger()
-            await this.getStoreage()
 
             // if (this.components.Landing) { return }
             
@@ -134,9 +133,10 @@
                 console.log('subscription', subscription)
 
                 xapp.openSignRequest({ uuid: subscription.created.uuid })
-                    .then(d => {
+                    .then(async d => {
                         // d (returned value) can be Error or return data:
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
+                        await self.getStoreage()
                     })
                     .catch(e => console.log('Error:', e.message))
             },
