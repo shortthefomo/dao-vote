@@ -173,7 +173,7 @@
                     .catch(e => console.log('Error:', e.message))
             },
             setValidator(key) {
-                Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
+                return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
             },
             highlights(amendment) {
                 if (this.selected_vote.includes(amendment.hash)) {
