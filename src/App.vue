@@ -34,7 +34,7 @@
         },
         data() {
             return {
-                Sdk: new XummSdkJwt(import.meta.env.VITE_APP_NFT_KEY),
+                Sdk: new XummSdkJwt(import.meta.env.VITE_XUMM_APPKEY),
                 nodetype: 'TESTNET',
                 pong: false,
                 ready: false,
