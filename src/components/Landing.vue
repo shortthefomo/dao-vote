@@ -109,14 +109,13 @@ import { XrplClient } from 'xrpl-client'
                 console.log('servers', servers)
                 const client = new XrplClient(servers)
 
-                const Memos = Object.keys(data.rawResultsNamed).map(k => {
-                    return {
-                        Memo: {
-                            MemoData: Buffer.from(JSON.toString({amendment_vote: this.selected_vote, position: false}), 'utf-8').toString('hex').toUpperCase(),
-                            MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
-                        }
+                const Memos =[{
+                    Memo: {
+                        MemoData: Buffer.from(JSON.toString({amendment_vote: this.selected_vote, position: false}), 'utf-8').toString('hex').toUpperCase(),
+                        MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
                     }
-                })
+                }]
+                    
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
