@@ -231,7 +231,7 @@
                     await self.waitForOpenConnection(self.socket)
                     self.socket.send(JSON.stringify({
                         op: 'subscribe',
-                        channel: self.validator_key
+                        channel: this.$store.getters.getAccount
                     }))
                     self.ping = setInterval(function() {
                         self.socket.send(JSON.stringify({ op: 'ping' }))
@@ -246,21 +246,21 @@
                     }
 
                     const data  = JSON.parse(message.data)
-                    
-                    if (data[self.validator_key] !== undefined) {
-                        if ('topic' in data[self.validator_key]) {
-                            if (data[self.validator_key].topic === 'decode-node-public') {
+                    const account = self.$store.getters.getAccount
+                    if (data[account] !== undefined) {
+                        if ('topic' in data[account]) {
+                            if (data[account].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
-                                self.decoded_keys[self.validator_key] = data[self.validator_key].key
+                                self.decoded_keys[account] = data[account].key
                             }
-                            if (data[self.validator_key].topic === 'encode-node-public') {
+                            if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
                             }
                             return
                         }
 
                         
-                        self.validator_data = data[self.validator_key]
+                        self.validator_data = data[account]
                         // console.log(self.validator_data)
                         self.votes = []
                         for (const [key, value] of Object.entries(self.validator_data.votable_amendments.nay)) {
