@@ -236,6 +236,16 @@
 
                     const data  = JSON.parse(message.data)
                     if (data[self.validator_key] !== undefined) {
+                        if ('topic' in data) {
+                            if (data.topic === 'decode-node-public') {
+                                console.log('decode-node-public ...', data)
+                            }
+                            if (data.topic === 'encode-node-public') {
+                                console.log('encode-node-public ...', data)
+                            }
+                        }
+
+
                         self.validator_data = data[self.validator_key]
                         // console.log(self.validator_data)
                         self.votes = []
