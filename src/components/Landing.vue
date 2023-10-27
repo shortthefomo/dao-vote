@@ -231,7 +231,7 @@
                     await self.waitForOpenConnection(self.socket)
                     self.socket.send(JSON.stringify({
                         op: 'subscribe',
-                        channel: this.$store.getters.getAccount
+                        channel: self.$store.getters.getAccount
                     }))
                     self.ping = setInterval(function() {
                         self.socket.send(JSON.stringify({ op: 'ping' }))
