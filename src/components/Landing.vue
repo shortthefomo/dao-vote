@@ -225,7 +225,7 @@
                     }, 5000)
                     console.log('sockets connected! :)')
 
-                    self.socket.send(JSON.stringify({channel: self.validator_key, topic: 'decode-node-public', key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA'}))
+                    self.socket.send(JSON.stringify({channel: self.validator_key, topic: 'decode-node-public', key: self.validator_key}))
                 }
                 this.socket.onmessage = function (message) {
                     // console.log('message', message)
@@ -241,6 +241,7 @@
                         if ('topic' in data[self.validator_key]) {
                             if (data[self.validator_key].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
+                                self.socket.send(JSON.stringify({channel: self.validator_key, topic: 'encode-node-public', key: data[self.validator_key].key}))
                             }
                             if (data[self.validator_key].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
