@@ -66,7 +66,7 @@
                 isLoading: true,
                 selected_vote: [],
                 socket: null,
-                validator_key: undefined,
+                validator_key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA',
                 validator_data: null,
                 votes: [],
                 decoded_keys: [],
