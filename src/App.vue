@@ -20,8 +20,8 @@
     import Landing from './components/Landing.vue'
     import Viewer from './components/Viewer.vue'
     import { XrplClient } from 'xrpl-client'
-    import {XummSdkJwt} from 'xumm-sdk'
-
+    import { XummSdkJwt } from 'xumm-sdk'
+    import { Buffer } from 'buffer'
     const xapp = window.xAppSdk
     
     export default {
@@ -47,7 +47,10 @@
         },
         async mounted() {
             console.log('in we go.')
-            await this.jwtFlow()
+            const { data } = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${this.validator_key}`)
+            console.log(data)
+            //await this.jwtFlow()
+            // console.log(this.test())
             
 
             // if (this.components.Landing) { return }
@@ -141,6 +144,9 @@
                     })
                     .catch(e => console.log('Error:', e.message))
             },
+            // test(key) {
+            //     return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
+            // },
             async accountInfo() {
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 console.log('this.client', this.client)
@@ -159,7 +165,8 @@
                 console.log(res)
 
                 if ('MessageKey' in res.account_data) {
-
+                    // return codec.decodeNodePublic(key)
+                    // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
                 }
                 // this.$store.dispatch('setAccountData', res.account_data)
 
