@@ -249,7 +249,6 @@
 
                     const data  = JSON.parse(message.data)
                     
-                    console.log(data)
                     if (data[self.validator_key] !== undefined) {
                         if ('topic' in data[self.validator_key]) {
                             if (data[self.validator_key].topic === 'decode-node-public') {
@@ -349,8 +348,6 @@
             async accountInfo() {
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 console.log('this.client', this.client)
-                const ledger_result = await this.client.send({ id:1, command: 'server_info'})
-                console.log(ledger_result)
 
                 const payload = {
                     'id': 3,
