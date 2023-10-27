@@ -1,11 +1,16 @@
 'use strict'
  /* eslint-disable */ 
+
+import { XrplClient } from 'xrpl-client'
+
 export const AppStore = {
     state: () => ({
         version: '0.0.1',
         xumm: {
             tokenData: null
         },
+        client: null,
+        servers: [],
         account: '',
         user_token: '',
         ledger: 0,
@@ -26,7 +31,13 @@ export const AppStore = {
         },
         setStorage({commit}, data) {
             commit('STORE', data)
-        }
+        },
+        clientConnect({commit}, force) {
+            commit('CONNECT', force)
+        },
+        setClientServers({commit}, servers) {
+            commit('SERVERS', servers)
+        },
     },
     mutations: {
         TOKEN_DATA(state, data) {
@@ -43,7 +54,24 @@ export const AppStore = {
         },
         STORE(state, data) {
             state.data = data
-        }
+        },
+        CONNECT(state, force) {
+            if (state.servers.length < 0) { return }
+            if (force || state.client == null) {
+                state.client = new XrplClient(state.servers)
+            }
+        },
+        SERVERS(state, servers) {
+            let diff = false
+            if (state.servers != servers) {
+                diff = true
+            }
+            state.servers = servers
+
+            if (diff && state.client != null) {
+                state.client = new XrplClient(state.servers)
+            }
+        },
     },
     getters: {
         getVersion: state => {
@@ -63,6 +91,9 @@ export const AppStore = {
         },
         getStoreage: state => {
             return state.data
+        },
+        getClient: state => {
+            return state.client
         },
     }
 }

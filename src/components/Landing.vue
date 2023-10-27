@@ -69,7 +69,8 @@
                 validator_key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA',
                 validator_data: null,
                 votes: [],
-                decoded_keys: []
+                decoded_keys: [],
+                client: null
             }
         },
         async mounted() {
@@ -79,7 +80,9 @@
                 console.log('landing logged in...')
             }
 
+            this.client = this.$store.getters.getClient
             await this.connectWebsocket()
+            await this.accountInfo()
         },
         computed: {
             ledger() {
@@ -341,7 +344,58 @@
 				}
 
 				return bytes
-			}
+			},
+            async accountInfo() {
+                console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
+                console.log('this.client', this.client)
+                const ledger_result = await this.client.send({ id:1, command: 'server_info'})
+                console.log(ledger_result)
+
+                const payload = {
+                    'id': 3,
+                    'command': 'account_info',
+                    'account': this.$store.getters.getAccount,
+                    'ledger_index': 'current'
+                }
+                console.log(payload)
+                let res = await this.client.send(payload)
+                console.log('accountInfo')
+                console.log(res)
+
+                if ('MessageKey' in res.account_data) {
+                    // return codec.decodeNodePublic(key)
+                    // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
+                }
+                // this.$store.dispatch('setAccountData', res.account_data)
+
+                // const account_data = this.$store.getters.getAccountData
+                // console.log('getAccountData', account_data)
+                // const flags = flagNames(account_data.LedgerEntryType, account_data.Flags)
+                // console.log('flags', flags)
+
+                // // check if master key enabled.
+                // if (flags.includes('lsfDisableMaster')) {
+                //     this.masterKey = false
+                //     console.log('masterkey disabled')
+                // }
+                // else {
+                //     this.masterKey = true
+                //     console.log('masterkey enabled')
+                // }
+
+                // if ('RegularKey' in account_data) {
+                //     this.regularKeyAddress = account_data.RegularKey
+                //     this.regularKey = true
+                // }
+                // else {
+                //     this.regularKeyAddress = null
+                //     this.regularKey = false
+                // }
+
+                // const tokenData = this.$store.getters.getXummTokenData
+                // this.accountAccess = tokenData.accountaccess
+                // console.log('this.accountAccess', this.accountAccess)
+            },
         },
     }
 </script>
