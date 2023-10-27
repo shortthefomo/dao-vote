@@ -19,13 +19,11 @@
     import Refs from './components/Refs.vue'
     import Landing from './components/Landing.vue'
     import Viewer from './components/Viewer.vue'
-
     import { XrplClient } from 'xrpl-client'
-
-    const xapp = window.xAppSdk
-
     import {XummSdkJwt} from 'xumm-sdk'
 
+    const xapp = window.xAppSdk
+    
     export default {
         components: {
             Landing,
@@ -48,9 +46,9 @@
             }
         },
         async mounted() {
-            console.log('hi...')
-            await this.accountInfo()
             console.log('in we go.')
+            await this.jwtFlow()
+            
 
             // if (this.components.Landing) { return }
             
@@ -104,9 +102,8 @@
                 console.log('wss servers', this.servers)
                 
                 this.client = new XrplClient(this.servers)
-                // await this.jwtSignIn()
                 this.currentLedger()
-                
+                await this.jwtSignIn()
             },
             async jwtSignIn() {
                 const self = this
@@ -145,11 +142,8 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async accountInfo() {
-                this.client = new XrplClient('wss://s.altnet.rippletest.net:51233/')
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 console.log('this.client', this.client)
-                await this.client.connect()
-                console.log('client connected')
                 const ledger_result = await this.client.send({ id:1, command: 'server_info'})
                 console.log(ledger_result)
 
