@@ -366,6 +366,7 @@
                 console.log(res)
 
                 if ('MessageKey' in res.account_data) {
+                    await this.waitForOpenConnection(this.socket)
                     this.set_key = true
                     console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', key: res.account_data.MessageKey})
                     this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public', key: res.account_data.MessageKey}))
