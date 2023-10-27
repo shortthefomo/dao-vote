@@ -55,7 +55,6 @@
 </template>
 
 <script>
-    import { XrplClient } from 'xrpl-client'
     import { Buffer } from 'buffer'
     // const codec = require('ripple-address-codec')
     // import { codec } from 'ripple-address-codec'
@@ -139,14 +138,10 @@
                 this.submitVote({ txjson: payload })
             },
             async submitVote(request) {
+                // lock it to testnet for testing right now
                 const tokenData = this.$store.getters.getXummTokenData
                 if (tokenData.nodetype !== 'TESTNET') { return }
-                const servers = [tokenData.nodewss]
-                if (tokenData.nodetype == 'MAINNET') {
-                    servers.unshift('wss://node.panicbot.xyz')
-                }
-                console.log('servers', servers)
-                const client = new XrplClient(servers)
+
                 const self = this
                 const subscription = await this.Sdk.payload.createAndSubscribe(request, async event => {
                     console.log('New payload event:', event.data)
@@ -154,13 +149,11 @@
                     if (event.data.signed === true) {
                         console.log('Woohoo! The sign request was signed :)')
                         await self.reloadData()
-                        client.close()
                         return event.data
                     }
 
                     if (event.data.signed === false) {
                         console.log('The sign request was rejected :(')
-                        client.close()
                         return false
                     }
                 })
