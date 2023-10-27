@@ -79,6 +79,7 @@
             }
 
             await this.connectWebsocket()
+            this.socket.send({'convert-key': { key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA'}})
         },
         computed: {
             ledger() {
