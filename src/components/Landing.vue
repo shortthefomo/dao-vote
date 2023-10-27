@@ -58,7 +58,7 @@
     import { XrplClient } from 'xrpl-client'
     import { Buffer } from 'buffer'
     // const codec = require('ripple-address-codec')
-    import { codec } from 'ripple-address-codec'
+    // import { codec } from 'ripple-address-codec'
     const xapp = window.xAppSdk
 
     export default {
