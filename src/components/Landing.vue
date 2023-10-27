@@ -359,7 +359,9 @@
                 console.log(res)
 
                 if ('MessageKey' in res.account_data) {
-                    console.log('encoded', this.socket.send(JSON.stringify({channel: this.validator_key, topic: 'encode-node-public', key: res.account_data.MessageKey})))
+                    console.log('sending', {channel: this.validator_key, topic: 'encode-node-public', key: res.account_data.MessageKey})
+                    this.socket.send(JSON.stringify({channel: this.validator_key, topic: 'encode-node-public', key: res.account_data.MessageKey}))
+                    console.log('encoded')
                 }
                 // this.$store.dispatch('setAccountData', res.account_data)
 
