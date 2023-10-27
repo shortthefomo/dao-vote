@@ -251,12 +251,10 @@
                             if (data[self.validator_key].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
                                 self.decoded_keys[self.validator_key] = data[self.validator_key].key
-                                self.socket.send(JSON.stringify({channel: self.validator_key, topic: 'encode-node-public', key: data[self.validator_key].key}))
                             }
                             if (data[self.validator_key].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
                             }
-                            
                             return
                         }
 
