@@ -68,7 +68,8 @@
                 socket: null,
                 validator_key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA',
                 validator_data: null,
-                votes: []
+                votes: [],
+                decoded_keys: []
             }
         },
         async mounted() {
@@ -99,6 +100,10 @@
         methods: {
             async voteYay() {
                 console.log('voteYay', this.selected_vote)
+                if (this.decoded_keys[this.validator_key] === undefined) {
+                    console.log(`this validators key has not been decoded key ${this.validator_key}`)
+                    return
+                }
                 const Memos =[{
                     Memo: {
                         MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: false }), 'utf-8').toString('hex').toUpperCase(),
@@ -109,7 +114,7 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    MessageKey: 'ED420D00EEF1BE462BA916EB9C56680CA8C6DC9117419681A6B12ABB5C4D8A407F',
+                    MessageKey: this.decoded_keys[this.validator_key],
                     Memos
                 }
 
@@ -118,6 +123,10 @@
             },
             async voteNay() {
                 console.log('voteNay', this.selected_vote)
+                if (this.decoded_keys[this.validator_key] === undefined) {
+                    console.log(`this validators key has not been decoded key ${this.validator_key}`)
+                    return
+                }
                 const Memos =[{
                     Memo: {
                         MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: true }), 'utf-8').toString('hex').toUpperCase(),
@@ -128,7 +137,7 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    MessageKey: 'ED420D00EEF1BE462BA916EB9C56680CA8C6DC9117419681A6B12ABB5C4D8A407F',
+                    MessageKey: this.decoded_keys[this.validator_key],
                     Memos
                 }
 
@@ -241,6 +250,7 @@
                         if ('topic' in data[self.validator_key]) {
                             if (data[self.validator_key].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
+                                self.decoded_keys[self.validator_key] = data[self.validator_key].key
                                 self.socket.send(JSON.stringify({channel: self.validator_key, topic: 'encode-node-public', key: data[self.validator_key].key}))
                             }
                             if (data[self.validator_key].topic === 'encode-node-public') {
