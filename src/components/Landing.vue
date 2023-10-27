@@ -256,11 +256,14 @@
                             }
                             if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
-                                self.validator_key = data[account].key
-                                self.socket.send(JSON.stringify({
-                                    op: 'subscribe',
-                                    channel: data[account].key
-                                }))
+                                if (self.set_key) {
+                                    self.set_key = false
+                                    self.validator_key = data[account].key
+                                    self.socket.send(JSON.stringify({
+                                        op: 'subscribe',
+                                        channel: data[account].key
+                                    }))
+                                }
                             }
                             return
                         }
