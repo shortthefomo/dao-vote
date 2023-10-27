@@ -237,8 +237,6 @@
                         self.socket.send(JSON.stringify({ op: 'ping' }))
                     }, 5000)
                     console.log('sockets connected! :)')
-
-                    self.socket.send(JSON.stringify({channel: self.validator_key, topic: 'decode-node-public', key: self.validator_key}))
                 }
                 this.socket.onmessage = function (message) {
                     // console.log('message', message)
@@ -361,8 +359,7 @@
                 console.log(res)
 
                 if ('MessageKey' in res.account_data) {
-                    // return codec.decodeNodePublic(key)
-                    // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
+                    log('encoded', this.socket.send(JSON.stringify({channel: this.validator_key, topic: 'encode-node-public', key: res.account_data.MessageKey})))
                 }
                 // this.$store.dispatch('setAccountData', res.account_data)
 
