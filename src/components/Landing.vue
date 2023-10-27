@@ -253,14 +253,14 @@
                             if (data[account].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
                                 self.decoded_keys[account] = data[account].key
+                            }
+                            if (data[account].topic === 'encode-node-public') {
+                                console.log('encode-node-public ...', data)
                                 self.validator_key = data[account].key
                                 self.socket.send(JSON.stringify({
                                     op: 'subscribe',
                                     channel: data[account].key
                                 }))
-                            }
-                            if (data[account].topic === 'encode-node-public') {
-                                console.log('encode-node-public ...', data)
                             }
                             return
                         }
