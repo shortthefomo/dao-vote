@@ -142,6 +142,10 @@
             },
             async accountInfo() {
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
+
+                const ledger_result = await this.client.send({ id:1, command: 'server_info'})
+                console.log(ledger_result)
+
                 const payload = {
                     'id': 3,
                     'command': 'account_info',
