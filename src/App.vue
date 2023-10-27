@@ -98,7 +98,7 @@
                     servers.unshift('wss://node.panicbot.xyz')
                 }
                 if (tokenData.nodetype === 'TESTNET') {
-                    servers.push('wss://s.altnet.rippletest.net:51233/')
+                    servers.unshift('wss://s.altnet.rippletest.net:51233/')
                 }
                 console.log('wss servers', servers)
                 
