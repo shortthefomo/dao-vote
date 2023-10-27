@@ -141,6 +141,7 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async accountInfo() {
+                console.log('fetching accountInfo')
                 const payload = {
                     'id': 1,
                     'command': 'account_info',
