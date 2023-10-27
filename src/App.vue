@@ -36,6 +36,7 @@
             return {
                 Sdk: new XummSdkJwt(import.meta.env.VITE_XUMM_APPKEY),
                 nodetype: 'TESTNET',
+                servers: [],
                 pong: false,
                 ready: false,
                 components: {
@@ -48,7 +49,7 @@
         },
         async mounted() {
             console.log('hi...')
-            await this.jwtFlow()
+            await this.accountInfo()
             console.log('in we go.')
 
             // if (this.components.Landing) { return }
@@ -93,19 +94,19 @@
                 this.$store.dispatch('setAccount', tokenData.account)
                 this.nodetype = tokenData.nodetype
 
-                const servers = [tokenData.nodewss]
+                this.servers = [tokenData.nodewss]
                 if (tokenData.nodetype === 'MAINNET') {
-                    servers.unshift('wss://node.panicbot.xyz')
+                    this.servers.unshift('wss://node.panicbot.xyz')
                 }
                 if (tokenData.nodetype === 'TESTNET') {
-                    servers.unshift('wss://s.altnet.rippletest.net:51233/')
+                    this.servers.unshift('wss://s.altnet.rippletest.net:51233/')
                 }
-                console.log('wss servers', servers)
+                console.log('wss servers', this.servers)
                 
-                this.client = new XrplClient(servers)
+                this.client = new XrplClient(this.servers)
                 // await this.jwtSignIn()
                 this.currentLedger()
-                this.accountInfo()
+                
             },
             async jwtSignIn() {
                 const self = this
@@ -144,6 +145,7 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async accountInfo() {
+                this.client = new XrplClient('wss://s.altnet.rippletest.net:51233/')
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 console.log('this.client', this.client)
                 const ledger_result = await this.client.send({ id:1, command: 'server_info'})
