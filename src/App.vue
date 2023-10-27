@@ -102,7 +102,7 @@
                 
                 this.client = new XrplClient(servers)
                 // await this.jwtSignIn()
-                // await this.accountInfo()
+                await this.accountInfo()
             },
             async jwtSignIn() {
                 const self = this
@@ -143,7 +143,7 @@
             async accountInfo() {
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 const payload = {
-                    'id': 1,
+                    'id': 'vote-dao-account-info',
                     'command': 'account_info',
                     'account': this.$store.getters.getAccount,
                     'ledger_index': 'validated'
