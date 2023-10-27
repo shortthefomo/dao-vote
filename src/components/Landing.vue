@@ -80,6 +80,7 @@
                 console.log('landing logged in...')
             }
 
+            this.$store.dispatch('clientConnect', false)
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
             await this.accountInfo()
