@@ -232,7 +232,7 @@
                     await self.waitForOpenConnection(self.socket)
                     self.socket.send(JSON.stringify({
                         op: 'subscribe',
-                        channel: self.$store.getters.getAccount
+                        channel: self.validator_key  //self.$store.getters.getAccount
                     }))
                     self.ping = setInterval(function() {
                         self.socket.send(JSON.stringify({ op: 'ping' }))
@@ -247,7 +247,7 @@
                     }
 
                     const data  = JSON.parse(message.data)
-                    const account = self.$store.getters.getAccount
+                    const account = self.validator_key //self.$store.getters.getAccount
                     if (data[account] !== undefined) {
                         if ('topic' in data[account]) {
                             if (data[account].topic === 'decode-node-public') {
