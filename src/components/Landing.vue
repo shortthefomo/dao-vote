@@ -106,8 +106,6 @@
                     }
                 }]
                 
-                const { data } = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${this.validator_key}`)
-                log(data)
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
