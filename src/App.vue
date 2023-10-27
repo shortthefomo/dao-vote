@@ -143,14 +143,15 @@
             async accountInfo() {
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 const payload = {
-                    'id': 'vote-dao-account-info',
+                    'id': 3,
                     'command': 'account_info',
                     'account': this.$store.getters.getAccount,
                     'ledger_index': 'current'
                 }
                 console.log(payload)
                 let res = await this.client.send(payload)
-                console.log('accountInfo', res)
+                console.log('accountInfo')
+                console.log(res)
                 // this.$store.dispatch('setAccountData', res.account_data)
 
                 // const account_data = this.$store.getters.getAccountData
