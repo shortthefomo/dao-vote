@@ -66,11 +66,12 @@
                 isLoading: true,
                 selected_vote: [],
                 socket: null,
-                validator_key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA',
+                validator_key: undefined,
                 validator_data: null,
                 votes: [],
                 decoded_keys: [],
-                client: null
+                client: null,
+                set_key: false
             }
         },
         async mounted() {
@@ -252,6 +253,10 @@
                             if (data[account].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
                                 self.decoded_keys[account] = data[account].key
+                                if (self.set_key) {
+                                    self.set_key = false
+                                    self.validator_key = data[account].key
+                                }
                             }
                             if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
@@ -359,6 +364,7 @@
                 console.log(res)
 
                 if ('MessageKey' in res.account_data) {
+                    this.set_key = true
                     console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', key: res.account_data.MessageKey})
                     this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public', key: res.account_data.MessageKey}))
                     console.log('encoded')
