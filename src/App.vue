@@ -103,7 +103,7 @@
                 
                 this.client = new XrplClient(this.servers)
                 this.currentLedger()
-                await this.jwtSignIn()
+                await this.accountInfo()
             },
             async jwtSignIn() {
                 const self = this
