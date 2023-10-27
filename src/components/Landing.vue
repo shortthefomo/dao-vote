@@ -80,7 +80,7 @@
 
             await this.connectWebsocket()
             await this.waitForOpenConnection(this.socket)
-            this.socket.send(JSON.stringify({topic: 'convert-key', key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA'}))
+            this.socket.send(JSON.stringify({channel: this.validator_key, topic: 'decode-node-public', key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA'}))
         },
         computed: {
             ledger() {
