@@ -148,6 +148,8 @@
                 this.client = new XrplClient('wss://s.altnet.rippletest.net:51233/')
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 console.log('this.client', this.client)
+                await this.client.connect()
+                console.log('client connected')
                 const ledger_result = await this.client.send({ id:1, command: 'server_info'})
                 console.log(ledger_result)
 
