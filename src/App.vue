@@ -141,13 +141,14 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async accountInfo() {
-                console.log('fetching accountInfo')
+                console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 const payload = {
                     'id': 1,
                     'command': 'account_info',
                     'account': this.$store.getters.getAccount,
                     'ledger_index': 'validated'
                 }
+                console.log(payload)
                 let res = await this.client.send(payload)
                 console.log('accountInfo', res)
                 // this.$store.dispatch('setAccountData', res.account_data)
