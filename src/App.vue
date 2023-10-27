@@ -47,11 +47,7 @@
         },
         async mounted() {
             console.log('in we go.')
-            // const { data } = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${this.validator_key}`)
-            // console.log(data)
-            //await this.jwtFlow()
-            // console.log(this.test())
-            
+            await this.jwtFlow()
 
             // if (this.components.Landing) { return }
             
