@@ -243,6 +243,7 @@
                             if (data.topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
                             }
+                            console.log('xxxx', data)
                             return
                         }
 
