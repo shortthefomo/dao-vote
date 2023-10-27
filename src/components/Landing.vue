@@ -66,7 +66,7 @@
                 isLoading: true,
                 selected_vote: [],
                 socket: null,
-                validator_key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA',
+                validator_key: '',
                 validator_data: null,
                 votes: [],
                 decoded_keys: [],
@@ -247,25 +247,27 @@
                     }
 
                     const data  = JSON.parse(message.data)
-                    const account = self.validator_key //self.$store.getters.getAccount
+                    const account = self.$store.getters.getAccount
                     if (data[account] !== undefined) {
                         if ('topic' in data[account]) {
                             if (data[account].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
                                 self.decoded_keys[account] = data[account].key
-                                if (self.set_key) {
-                                    self.set_key = false
-                                    self.validator_key = data[account].key
-                                }
+                                self.validator_key = data[account].key
+                                self.socket.send(JSON.stringify({
+                                    op: 'subscribe',
+                                    channel: data[account].key
+                                }))
                             }
                             if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
                             }
                             return
                         }
-
-                        
-                        self.validator_data = data[account]
+                    }
+                    const validator = self.validator_key //self.$store.getters.getAccount
+                    if (data[validator] !== undefined) {
+                        self.validator_data = data[validator]
                         // console.log(self.validator_data)
                         self.votes = []
                         for (const [key, value] of Object.entries(self.validator_data.votable_amendments.nay)) {
