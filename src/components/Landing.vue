@@ -235,7 +235,7 @@
                     }
 
                     const data  = JSON.parse(message.data)
-                    // console.log('xxxx', data)
+                    console.log('xxxx', data)
                     if (data[self.validator_key] !== undefined) {
                         if ('topic' in data[self.validator_key]) {
                             if (data[self.validator_key].topic === 'decode-node-public') {
