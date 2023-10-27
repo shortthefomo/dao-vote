@@ -261,23 +261,23 @@
                         }
 
                         
-                        // self.validator_data = data[self.validator_key]
-                        // // console.log(self.validator_data)
-                        // self.votes = []
-                        // for (const [key, value] of Object.entries(self.validator_data.votable_amendments.nay)) {
-                        //     self.votes.push({
-                        //         hash: key,
-                        //         label: value,
-                        //         flag: 'nay'
-                        //     })
-                        // }
-                        // for (const [key, value] of Object.entries(self.validator_data.votable_amendments.yay)) {
-                        //     self.votes.push({
-                        //         hash: key,
-                        //         label: value,
-                        //         flag: 'yay'
-                        //     })
-                        // }
+                        self.validator_data = data[self.validator_key]
+                        // console.log(self.validator_data)
+                        self.votes = []
+                        for (const [key, value] of Object.entries(self.validator_data.votable_amendments.nay)) {
+                            self.votes.push({
+                                hash: key,
+                                label: value,
+                                flag: 'nay'
+                            })
+                        }
+                        for (const [key, value] of Object.entries(self.validator_data.votable_amendments.yay)) {
+                            self.votes.push({
+                                hash: key,
+                                label: value,
+                                flag: 'yay'
+                            })
+                        }
                     }
                 }
                 this.socket.onerror = function (message) {
