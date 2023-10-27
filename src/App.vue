@@ -102,7 +102,7 @@
                 console.log('wss servers', this.servers)
                 
                 this.client = new XrplClient(this.servers)
-                this.currentLedger()
+                // this.currentLedger()
                 await this.accountInfo()
             },
             async jwtSignIn() {
@@ -157,6 +157,10 @@
                 let res = await this.client.send(payload)
                 console.log('accountInfo')
                 console.log(res)
+
+                if ('MessageKey' in res.account_data) {
+
+                }
                 // this.$store.dispatch('setAccountData', res.account_data)
 
                 // const account_data = this.$store.getters.getAccountData
