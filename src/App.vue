@@ -141,9 +141,10 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async accountInfo() {
+                const client = new XrplClient(['wss://s.altnet.rippletest.net:51233/'])
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
-                console.log('this.client', this.client)
-                const ledger_result = await this.client.send({ id:1, command: 'server_info'})
+                console.log('this.client', client)
+                const ledger_result = await client.send({ id:1, command: 'server_info'})
                 console.log(ledger_result)
 
                 const payload = {
@@ -153,7 +154,7 @@
                     'ledger_index': 'current'
                 }
                 console.log(payload)
-                let res = await this.client.send(payload)
+                let res = await client.send(payload)
                 console.log('accountInfo')
                 console.log(res)
                 // this.$store.dispatch('setAccountData', res.account_data)
