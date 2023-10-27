@@ -237,11 +237,11 @@
                     const data  = JSON.parse(message.data)
                     console.log('xxxx', data)
                     if (data[self.validator_key] !== undefined) {
-                        if ('topic' in data) {
-                            if (data.topic === 'decode-node-public') {
+                        if ('topic' in data[self.validator_key]) {
+                            if (data[self.validator_key].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
                             }
-                            if (data.topic === 'encode-node-public') {
+                            if (data[self.validator_key].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
                             }
                             
