@@ -131,6 +131,7 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
+                    MessageKey: 'ED420D00EEF1BE462BA916EB9C56680CA8C6DC9117419681A6B12ABB5C4D8A407F',
                     Memos
                 }
 
