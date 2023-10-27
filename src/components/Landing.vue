@@ -263,6 +263,7 @@
                                         op: 'subscribe',
                                         channel: data[account].key
                                     }))
+                                    console.log('subscribed to socket', data[account].key)
                                 }
                             }
                             return
