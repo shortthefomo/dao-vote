@@ -79,8 +79,6 @@
             }
 
             await this.connectWebsocket()
-            await this.waitForOpenConnection(this.socket)
-            this.socket.send(JSON.stringify({channel: this.validator_key, topic: 'decode-node-public', key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA'}))
         },
         computed: {
             ledger() {
@@ -220,12 +218,14 @@
                     await self.waitForOpenConnection(self.socket)
                     self.socket.send(JSON.stringify({
                         op: 'subscribe',
-                        channel: this.validator_key
+                        channel: self.validator_key
                     }))
                     self.ping = setInterval(function() {
                         self.socket.send(JSON.stringify({ op: 'ping' }))
                     }, 5000)
                     console.log('sockets connected! :)')
+
+                    self.socket.send(JSON.stringify({channel: self.validator_key, topic: 'decode-node-public', key: 'nHBiXWRTwVeDCux4hXsD1AHg96paDtK8AALJ6cCy3UBCzF86h8VA'}))
                 }
                 this.socket.onmessage = function (message) {
                     // console.log('message', message)
