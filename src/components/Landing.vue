@@ -269,6 +269,7 @@
 
                 this.socket.onclose = function (message) {
                     self.validator_data = null
+                    self.selected_vote = []
                     self.votes = []
                     console.log('socket disconnected!', message)
                     if (self.timeout_socket == null && message.code != 1005) {
