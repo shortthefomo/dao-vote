@@ -200,6 +200,7 @@
 
                     if (event.data.signed === true) {
                         if (key === '') {
+                            self.validator_key = ''
                             self.accountInfo()
                         }
                         console.log('Woohoo! The sign request was signed :)')
