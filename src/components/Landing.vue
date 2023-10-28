@@ -305,9 +305,9 @@
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
                                         op: 'subscribe',
-                                        channel: data[account].key
+                                        channel: data[account].initial
                                     }))
-                                    console.log('subscribed to socket', data[account].key)
+                                    console.log('subscribed to socket', data[account].initial)
                                 }
                             }
                             if (data[account].topic === 'encode-node-public') {
