@@ -15,6 +15,7 @@
                 <p v-if="validator_data !== null" class="text">
                     Full: {{ validator_data.full }}
                 </p>
+                <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Clear MessageKey</button>
             </div>
         </div>
     </div>
@@ -198,6 +199,9 @@
                     console.log('New payload event:', event.data)
 
                     if (event.data.signed === true) {
+                        if (key === '') {
+                            self.accountInfo()
+                        }
                         console.log('Woohoo! The sign request was signed :)')
                         return event.data
                     }
