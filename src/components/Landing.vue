@@ -155,13 +155,19 @@
                 console.log('payload', payload)
                 this.submitVote({ txjson: payload })
             },
-            async submitVote(request) {
+            async submitVote(payload) {
                 // lock it to testnet for testing right now
                 const tokenData = this.$store.getters.getXummTokenData
                 if (tokenData.nodetype !== 'TESTNET') { return }
 
+                const XummPayload = {
+                    'txjson': payload,
+                    custom_meta: {
+                        instruction: 'Send vote to validator deamon.'
+                    }
+                }
                 const self = this
-                const subscription = await this.Sdk.payload.createAndSubscribe(request, async event => {
+                const subscription = await this.Sdk.payload.createAndSubscribe(XummPayload, async event => {
                     console.log('New payload event:', event.data)
 
                     if (event.data.signed === true) {
