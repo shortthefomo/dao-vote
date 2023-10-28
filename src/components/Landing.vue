@@ -311,13 +311,13 @@
                     console.log('sockets connected! :)')
                 }
                 this.socket.onmessage = function (message) {
-                    // console.log('message', message)
                     if (self.timeout_socket != null) {
                         clearInterval(self.timeout_socket)
                         self.timeout_socket = null
                     }
 
                     const data  = JSON.parse(message.data)
+                    console.log('data', data)
                     const account = self.$store.getters.getAccount
                     if (data[account] !== undefined) {
                         if ('topic' in data[account]) {
