@@ -322,7 +322,7 @@
                         if ('topic' in data[account]) {
                             if (data[account].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
-                                self.decoded_keys[data[account].initial] = data[account].key
+                                self.decoded_keys[data[account].key] = data[account].key
                                 
                                 if (data[account].action === 'set-validator-key') {
                                     self.submitMessageKey(data[account].key, data[account].initial)
