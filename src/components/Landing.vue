@@ -19,7 +19,7 @@
         </div>
     </div>
     <h1 class="display-5 fw-bold">Voting Status</h1>
-    <div v-if="validator_data !== null" class="py-5 mb-4">
+    <div v-if="validator_data !== null && validator_key !== ''" class="py-5 mb-4">
         <div class="container-fluid pb-5">
             <table class="table">
                 <thead class="table-dark">
@@ -37,11 +37,15 @@
             </table>
         </div>
     </div>
-    <div v-else>
+    <div v-else-if="validator_key !== ''">
         <div class="container-fluid mb-5 p-2 bg-light">
             <h3 class="fw-bold text-center">{Waiting for validators data}</h3>
             <p class="text-center" v-if="isLoading">Loading validator..</p>
         </div>
+    </div>
+    <div v-else-if="validator_key === '' && isLoading === false">
+        <input id="register_key" v-model="register_key" placeholder="validaor key" class="mb-2 w-full py-2 border border-indigo-500 rounded" />
+        <button v-if="register_key !== ''" type="button" class="btn btn-secondary" @click="assignValidatorKey(register_key)">Set Key</button>
     </div>
     <div v-if="selected_vote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
@@ -375,6 +379,8 @@
                     this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key: res.account_data.MessageKey}))
                     console.log('encoded')
                 }
+
+                this.isLoading = false
                 // this.$store.dispatch('setAccountData', res.account_data)
 
                 // const account_data = this.$store.getters.getAccountData
