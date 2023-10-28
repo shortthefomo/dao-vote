@@ -220,8 +220,8 @@
                 console.log(key)
 
                 await this.waitForOpenConnection(this.socket)
-                console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'set-validator-key', key})
-                this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key}))
+                console.log('sending', {channel: this.$store.getters.getAccount, topic: 'decode-node-public', action: 'set-validator-key', key})
+                this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
             },
             setValidator(key) {
                 // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
@@ -298,10 +298,9 @@
                             if (data[account].topic === 'decode-node-public') {
                                 console.log('decode-node-public ...', data)
                                 self.decoded_keys[account] = data[account].key
-                            }
-                            if (data[account].topic === 'encode-node-public') {
-                                console.log('encode-node-public ...', data)
-                                if (data[account].action === 'listen-validator') {
+
+                                if (data[account].action === 'set-validator-key') {
+                                    self.submitMessageKey()
                                     self.isLoading = false
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
@@ -310,9 +309,10 @@
                                     }))
                                     console.log('subscribed to socket', data[account].key)
                                 }
-
-                                if (data[account].action === 'set-validator-key') {
-                                    self.submitMessageKey()
+                            }
+                            if (data[account].topic === 'encode-node-public') {
+                                console.log('encode-node-public ...', data)
+                                if (data[account].action === 'listen-validator') {
                                     self.isLoading = false
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
