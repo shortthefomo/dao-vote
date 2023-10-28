@@ -43,7 +43,7 @@
             <p class="text-center" v-if="isLoading">Loading validator..</p>
         </div>
     </div>
-    <div v-else-if="validator_key === '' && validator_key === false">
+    <div v-else-if="validator_key === '' && isLoading === false">
         <input id="register_key" v-model="register_key" placeholder="validaor key" class="mb-2 w-full py-2 border border-indigo-500 rounded" />
         <button v-if="register_key !== ''" type="button" class="btn btn-secondary" @click="assignValidatorKey(register_key)">Set Key</button>
     </div>
