@@ -183,7 +183,7 @@
                     })
                     .catch(e => console.log('Error:', e.message))
             },
-            async submitMessageKey(key) {
+            async submitMessageKey(key, initial = '') {
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
@@ -208,6 +208,14 @@
                         if (key === '') {
                             self.validator_key = ''
                             self.accountInfo()
+                        }
+                        if (initial !== '') {
+                            self.isLoading = false
+                            self.validator_key = initial
+                            self.socket.send(JSON.stringify({
+                                op: 'subscribe',
+                                channel: initial
+                            }))
                         }
                         console.log('Woohoo! The sign request was signed :)')
                         return event.data
@@ -311,13 +319,7 @@
                                 self.decoded_keys[account] = data[account].key
 
                                 if (data[account].action === 'set-validator-key') {
-                                    self.submitMessageKey(data[account].key)
-                                    self.isLoading = false
-                                    self.validator_key = data[account].initial
-                                    self.socket.send(JSON.stringify({
-                                        op: 'subscribe',
-                                        channel: data[account].initial
-                                    }))
+                                    self.submitMessageKey(data[account].key, data[account].initial)
                                     console.log('subscribed to socket', data[account].initial)
                                 }
                             }
