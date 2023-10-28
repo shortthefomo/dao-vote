@@ -256,8 +256,7 @@
                             }
                             if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
-                                if (self.set_key) {
-                                    self.set_key = false
+                                if (data[account].action === 'set-validator-key') {
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
                                         op: 'subscribe',
@@ -372,8 +371,8 @@
                 if ('MessageKey' in res.account_data) {
                     await this.waitForOpenConnection(this.socket)
                     this.set_key = true
-                    console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', key: res.account_data.MessageKey})
-                    this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public', key: res.account_data.MessageKey}))
+                    console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'set-validator-key', key: res.account_data.MessageKey})
+                    this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key: res.account_data.MessageKey}))
                     console.log('encoded')
                 }
                 // this.$store.dispatch('setAccountData', res.account_data)
