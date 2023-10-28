@@ -9,7 +9,7 @@
                 <p class="text">
                     Validator: {{ validator_key }}
                 </p>
-                <p v-if="validator_data !== null" class="text word-break">
+                <p v-if="validator_data !== null" class="text text-break">
                     Version: {{ validator_data.server_version }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
