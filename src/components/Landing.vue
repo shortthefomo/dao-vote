@@ -167,7 +167,7 @@
                     }
                 }
                 const self = this
-                const subscription = await this.Sdk.payload.createAndSubscribe(XummPayload, async event => {
+                const subscription = await this.Sdk.payload.createAndSubscribe(payload, async event => {
                     console.log('New payload event:', event.data)
 
                     if (event.data.signed === true) {
