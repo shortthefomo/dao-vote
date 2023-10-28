@@ -18,8 +18,8 @@
             </div>
         </div>
     </div>
-    <h1 class="display-5 fw-bold">Voting Status</h1>
     <div v-if="validator_data !== null && validator_key !== ''" class="py-5 mb-4">
+        <h1 class="display-5 fw-bold">Voting Status</h1>
         <div class="container-fluid pb-5">
             <table class="table">
                 <thead class="table-dark">
@@ -44,6 +44,7 @@
         </div>
     </div>
     <div v-else-if="validator_key === '' && isLoading === false">
+        <h1 class="display-5 fw-bold">Set Validator</h1>
         <input id="register_key" v-model="register_key" placeholder="validaor key" class="mb-2 w-full py-2 border border-indigo-500 rounded" />
         <button v-if="register_key !== ''" type="button" class="btn btn-secondary" @click="assignValidatorKey(register_key)">Set Key</button>
     </div>
@@ -123,7 +124,7 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    MessageKey: this.decoded_keys[this.validator_key],
+                    // MessageKey: this.decoded_keys[this.validator_key],
                     Memos
                 }
 
@@ -146,7 +147,7 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    MessageKey: this.decoded_keys[this.validator_key],
+                    // MessageKey: this.decoded_keys[this.validator_key],
                     Memos
                 }
 
@@ -164,7 +165,6 @@
 
                     if (event.data.signed === true) {
                         console.log('Woohoo! The sign request was signed :)')
-                        await self.reloadData()
                         return event.data
                     }
 
@@ -182,8 +182,46 @@
                     })
                     .catch(e => console.log('Error:', e.message))
             },
-            assignValidatorKey(key) {
+            async submitMessageKey() {
+                const payload = {
+                    TransactionType: 'AccountSet',
+                    Account: this.$store.getters.getAccount,
+                    MessageKey: this.decoded_keys[this.validator_key]
+                }
+
+                // lock it to testnet for testing right now
+                const tokenData = this.$store.getters.getXummTokenData
+                if (tokenData.nodetype !== 'TESTNET') { return }
+
+                const self = this
+                const subscription = await this.Sdk.payload.createAndSubscribe(payload, async event => {
+                    console.log('New payload event:', event.data)
+
+                    if (event.data.signed === true) {
+                        console.log('Woohoo! The sign request was signed :)')
+                        return event.data
+                    }
+
+                    if (event.data.signed === false) {
+                        console.log('The sign request was rejected :(')
+                        return false
+                    }
+                })
+                console.log('setSignerList', subscription)
+
+                xapp.openSignRequest({ uuid: subscription.created.uuid })
+                    .then(d => {
+                        // d (returned value) can be Error or return data:
+                        console.log('openSignRequest response:', d instanceof Error ? d.message : d)
+                    })
+                    .catch(e => console.log('Error:', e.message))
+            },
+            async assignValidatorKey(key) {
                 console.log(key)
+
+                await this.waitForOpenConnection(this.socket)
+                console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'set-validator-key', key: res.account_data.MessageKey})
+                this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key: res.account_data.MessageKey}))
             },
             setValidator(key) {
                 // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
@@ -263,7 +301,18 @@
                             }
                             if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
+                                if (data[account].action === 'listen-validator') {
+                                    self.isLoading = false
+                                    self.validator_key = data[account].key
+                                    self.socket.send(JSON.stringify({
+                                        op: 'subscribe',
+                                        channel: data[account].key
+                                    }))
+                                    console.log('subscribed to socket', data[account].key)
+                                }
+
                                 if (data[account].action === 'set-validator-key') {
+                                    self.submitMessageKey()
                                     self.isLoading = false
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
@@ -379,9 +428,8 @@
                 if ('MessageKey' in res.account_data) {
                     await this.waitForOpenConnection(this.socket)
                     this.set_key = true
-                    console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'set-validator-key', key: res.account_data.MessageKey})
-                    this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key: res.account_data.MessageKey}))
-                    console.log('encoded')
+                    console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'listen-validator', key: res.account_data.MessageKey})
+                    this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'listen-validator', key: res.account_data.MessageKey}))
                 } else {
                     this.isLoading = false
                 }
