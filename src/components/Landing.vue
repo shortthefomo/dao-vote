@@ -220,8 +220,8 @@
                 console.log(key)
 
                 await this.waitForOpenConnection(this.socket)
-                console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'set-validator-key', key: res.account_data.MessageKey})
-                this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key: res.account_data.MessageKey}))
+                console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'set-validator-key', key})
+                this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key}))
             },
             setValidator(key) {
                 // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
