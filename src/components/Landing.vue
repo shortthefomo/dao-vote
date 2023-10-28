@@ -182,11 +182,11 @@
                     })
                     .catch(e => console.log('Error:', e.message))
             },
-            async submitMessageKey() {
+            async submitMessageKey(key) {
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    MessageKey: this.decoded_keys[this.validator_key]
+                    MessageKey: key
                 }
 
                 // lock it to testnet for testing right now
@@ -300,9 +300,9 @@
                                 self.decoded_keys[account] = data[account].key
 
                                 if (data[account].action === 'set-validator-key') {
-                                    self.submitMessageKey()
+                                    self.submitMessageKey(data[account].key)
                                     self.isLoading = false
-                                    self.validator_key = data[account].key
+                                    self.validator_key = data[account].initial
                                     self.socket.send(JSON.stringify({
                                         op: 'subscribe',
                                         channel: data[account].initial
