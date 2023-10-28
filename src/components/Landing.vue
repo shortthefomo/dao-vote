@@ -15,7 +15,7 @@
                 <p v-if="validator_data !== null" class="text">
                     Full: {{ validator_data.full }}
                 </p>
-                <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Clear MessageKey</button>
+                <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
         </div>
     </div>
@@ -46,8 +46,8 @@
     </div>
     <div v-else-if="validator_key === '' && isLoading === false">
         <h1 class="display-5 fw-bold">Set Validator</h1>
-        <input id="register_key" v-model="register_key" placeholder="validaor key" class="mb-2 w-full py-2 border border-indigo-500 rounded" />
-        <button v-if="register_key !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(register_key)">Set Key</button>
+        <input id="register_key" v-model="register_key" placeholder="Validator public key" class="mb-2 w-full py-2 border border-indigo-500 rounded" />
+        <button v-if="register_key !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(register_key)">Link</button>
     </div>
     <div v-if="selected_vote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
@@ -193,7 +193,7 @@
                 const XummPayload = {
                     'txjson': payload,
                     custom_meta: {
-                        blob: (key === '') ? 'Clear MessageKey' : 'Set Validator'
+                        instruction: (key === '') ? 'Unlink validator with account' : 'Link validator with account'
                     }
                 }
                 // lock it to testnet for testing right now
