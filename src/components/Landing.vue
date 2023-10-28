@@ -157,9 +157,10 @@
             },
             async submitVote(payload) {
                 // lock it to testnet for testing right now
-                const tokenData = this.$store.getters.getXummTokenData
-                if (tokenData.nodetype !== 'TESTNET') { return }
+                // const tokenData = this.$store.getters.getXummTokenData
+                // if (tokenData.nodetype !== 'TESTNET') { return }
 
+                // bug here can use custom instructions...
                 const XummPayload = {
                     'txjson': payload,
                     custom_meta: {
@@ -203,8 +204,8 @@
                     }
                 }
                 // lock it to testnet for testing right now
-                const tokenData = this.$store.getters.getXummTokenData
-                if (tokenData.nodetype !== 'TESTNET') { return }
+                // const tokenData = this.$store.getters.getXummTokenData
+                // if (tokenData.nodetype !== 'TESTNET') { return }
 
                 const self = this
                 const subscription = await this.Sdk.payload.createAndSubscribe(XummPayload, async event => {
