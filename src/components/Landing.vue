@@ -182,6 +182,9 @@
                     })
                     .catch(e => console.log('Error:', e.message))
             },
+            assignValidatorKey(key) {
+                console.log(key)
+            },
             setValidator(key) {
                 // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
             },
