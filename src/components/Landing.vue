@@ -13,6 +13,9 @@
                     Version: {{ validator_data.server_version }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
+                    Ledger Index: {{ validator_data.ledger_index }}
+                </p>
+                <p v-if="validator_data !== null" class="text">
                     Full: {{ validator_data.full }}
                 </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
