@@ -43,7 +43,7 @@
             <p class="text-center" v-if="isLoading">Loading validator..</p>
         </div>
     </div>
-    <div v-else-if="validator_key === '' && isLoading === false">
+    <div v-else-if="validator_key === '' && validator_key === false">
         <input id="register_key" v-model="register_key" placeholder="validaor key" class="mb-2 w-full py-2 border border-indigo-500 rounded" />
         <button v-if="register_key !== ''" type="button" class="btn btn-secondary" @click="assignValidatorKey(register_key)">Set Key</button>
     </div>
@@ -261,6 +261,7 @@
                             if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
                                 if (data[account].action === 'set-validator-key') {
+                                    self.isLoading = false
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
                                         op: 'subscribe',
@@ -378,9 +379,10 @@
                     console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'set-validator-key', key: res.account_data.MessageKey})
                     this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'set-validator-key', key: res.account_data.MessageKey}))
                     console.log('encoded')
+                } else {
+                    this.isLoading = false
                 }
-
-                this.isLoading = false
+                
                 // this.$store.dispatch('setAccountData', res.account_data)
 
                 // const account_data = this.$store.getters.getAccountData
