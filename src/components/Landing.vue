@@ -514,7 +514,9 @@
                     if(p >= 2) result.push(" " + p + " " + name + "s")
                     value %= units[name]
                 }
-
+                if (result.length === 0) {
+                    result.push(seconds + ' seconds')
+                }
                 return result
             }
         },
