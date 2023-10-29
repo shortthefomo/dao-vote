@@ -25,7 +25,7 @@
                     State: {{ validator_data.state }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
-                    Last seen: {{ (Date.now() - validator_data.last_seen) / 1000 }}
+                    Last seen: {{secondsToString((Date.now() - validator_data.last_seen) / 1000) }}
                 </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
@@ -496,6 +496,27 @@
                 // this.accountAccess = tokenData.accountaccess
                 // console.log('this.accountAccess', this.accountAccess)
             },
+            secondsToString(seconds) {
+                let value = seconds
+
+                let units = {
+                    "day": 24*60*60,
+                    "hour": 60*60,
+                    "minute": 60,
+                    "second": 1
+                }
+
+                var result = []
+
+                for(let name in units) {
+                    let p =  Math.floor(value/units[name])
+                    if(p == 1) result.push(" " + p + " " + name)
+                    if(p >= 2) result.push(" " + p + " " + name + "s")
+                    value %= units[name]
+                }
+
+                return result
+            }
         },
     }
 </script>
