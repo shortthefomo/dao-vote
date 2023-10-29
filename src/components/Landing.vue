@@ -16,7 +16,10 @@
                     Ledger Index: {{ validator_data.ledger_index }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
-                    Full: {{ validator_data.full }}
+                    Base Fee: {{ validator_data.base_fee }}
+                </p>
+                <p v-if="validator_data !== null" class="text">
+                    Load Fee: {{ validator_data.load_fee }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
                     State: {{ validator_data.state }}
