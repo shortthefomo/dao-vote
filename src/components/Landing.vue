@@ -18,6 +18,12 @@
                 <p v-if="validator_data !== null" class="text">
                     Full: {{ validator_data.full }}
                 </p>
+                <p v-if="validator_data !== null" class="text">
+                    State: {{ validator_data.state }}
+                </p>
+                <p v-if="validator_data !== null" class="text">
+                    Last seen: {{ (Date.now() - validator_data.last_seen) / 1000 }}
+                </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
         </div>
