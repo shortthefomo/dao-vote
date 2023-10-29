@@ -10,7 +10,7 @@
                     Validator: {{ validator_key }}
                 </p>
                 <p v-if="validator_data !== null" class="text text-break">
-                    Version: {{ validator_data.server_version }}
+                    Version: {{ validator_data.server_version.substring(8) }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
                     Ledger Index: {{ validator_data.ledger_index }}
