@@ -7,10 +7,10 @@
             </div>
             <div class="col-md-12 fs-6">
                 <p class="text">
-                    Validator: {{ validator_key }}
+                    Validator: {{ validator_key.substring(0, 8) }}...
                 </p>
                 <p v-if="validator_data !== null" class="text text-break">
-                    Version: {{ validator_data.server_version.substring(8) }}...
+                    Version: {{ validator_data.server_version }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
                     Ledger Index: {{ validator_data.ledger_index }}
