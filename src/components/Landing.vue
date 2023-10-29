@@ -25,7 +25,7 @@
                     State: {{ validator_data.state }}
                 </p>
                 <p v-if="validator_data !== null" class="text">
-                    Last seen: {{secondsToString((Date.now() - validator_data.last_seen) / 1000) }}
+                    Last seen: {{ secondsToString((Date.now() - validator_data.last_seen) / 1000).toString() }}
                 </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
