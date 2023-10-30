@@ -114,6 +114,11 @@
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
             await this.fetchAccountInfo()
+            try {
+                this.axios.get('https://vote-backend.panicbot.xyz/api/test')
+            } catch(e) {
+                console.error(e)
+            }
         },
         computed: {
             ledger() {
