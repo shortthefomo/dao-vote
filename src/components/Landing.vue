@@ -489,6 +489,7 @@
                 
                 this.$store.dispatch('setAccountData', res.account_data)
                 this.checkAccountData()
+                this.signerList = await this.signerList()
             },
             checkAccountData() {
                 const account_data = this.$store.getters.getAccountData
@@ -514,7 +515,6 @@
                     this.regularKeyAddress = null
                     this.regularKey = false
                 }
-                this.signerList = await this.signerList()
             },
             async signerList(marker = undefined) {
                 this.$store.dispatch('clearSignerList')
