@@ -365,7 +365,6 @@
                                 self.decoded_keys[data[account].key] = data[account].key
                                 if (data[account].action === 'listen-validator') {
                                     self.validator_key_valid = true
-                                    self.isLoading = false
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
                                         op: 'subscribe',
@@ -483,8 +482,6 @@
                     this.set_key = true
                     console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'listen-validator', key: res.account_data.MessageKey})
                     this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'listen-validator', key: res.account_data.MessageKey}))
-                } else {
-                    this.isLoading = false
                 }
                 
                 this.$store.dispatch('setAccountData', res.account_data)
@@ -495,6 +492,7 @@
                 console.log('regularKey', this.regularKey)
                 console.log('signerList', this.signerList)
                 console.log('SingerLists', this.$store.getters.getSignerLists)
+                this.isLoading = false
             },
             checkAccountData() {
                 const account_data = this.$store.getters.getAccountData
