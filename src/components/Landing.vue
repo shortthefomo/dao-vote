@@ -361,7 +361,7 @@
                                     }))
                                     console.log('subscribed to socket', data[account].key)
                                 }
-                                if ('error' in data) {
+                                if ('error' in data[account]) {
                                     self.validator_key_valid = false
                                 }
                             }
