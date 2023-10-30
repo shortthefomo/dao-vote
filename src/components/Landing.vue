@@ -341,7 +341,7 @@
                     }
 
                     const data  = JSON.parse(message.data)
-                    console.log('data', data)
+                    // console.log('data', data)
                     const account = self.$store.getters.getAccount
                     if (data[account] !== undefined) {
                         if ('topic' in data[account]) {
@@ -490,6 +490,10 @@
                 this.$store.dispatch('setAccountData', res.account_data)
                 this.checkAccountData()
                 this.signerList = await this.fetchSignerList()
+
+                console.log('masterKey', this.masterKey)
+                console.log('regularKey', this.regularKey)
+                console.log('signerList', this.signerList)
             },
             checkAccountData() {
                 const account_data = this.$store.getters.getAccountData
