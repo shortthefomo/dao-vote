@@ -233,6 +233,7 @@
                     if (event.data.signed === true) {
                         if (key === '') {
                             self.validator_key = ''
+                            self.validator_data = null
                             self.accountInfo()
                         }
                         if (initial !== '') {
