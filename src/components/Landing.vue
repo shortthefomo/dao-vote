@@ -12,6 +12,9 @@
                 <p v-if="validator_data !== null" class="text text-break">
                     Version: {{ validator_data.server_version }}
                 </p>
+                <p v-if="validator_data !== null" class="text text-break">
+                    Latest Version: {{ validator_data.latest_version }}
+                </p>
                 <p v-if="validator_data !== null" class="text">
                     Ledger Index: {{ validator_data.ledger_index }}
                 </p>
