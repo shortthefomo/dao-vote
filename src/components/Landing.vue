@@ -61,7 +61,7 @@
     </div>
     <div v-else-if="validator_key === '' && isLoading === false">
         <h1 class="display-5 fw-bold">Set Validator</h1>
-        <input id="register_key" v-model="register_key" placeholder="Validator public key" class="mb-2 w-full py-2 border border-indigo-500 rounded" />
+        <input id="register_key" v-model="register_key" placeholder="Validator public key" class="mb-2 me-2 w-full py-2 border border-indigo-500 rounded" />
         <button v-if="register_key !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(register_key)">Link</button>
     </div>
     <div v-if="selected_vote.length > 0">
