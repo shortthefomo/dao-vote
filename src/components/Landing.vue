@@ -115,8 +115,8 @@
             await this.connectWebsocket()
             await this.fetchAccountInfo()
             try {
-                const x = this.axios.get('https://vote-backend.panicbot.xyz/api/test')
-                console.log('x', x)
+                const { data } = this.axios.get('https://vote-backend.panicbot.xyz/api/test')
+                console.log('data x', data)
             } catch(e) {
                 console.error(e)
             }
