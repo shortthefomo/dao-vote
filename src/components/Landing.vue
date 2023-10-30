@@ -62,7 +62,10 @@
     <div v-else-if="validator_key === '' && isLoading === false" class="mb-5">
         <h1 class="display-5 fw-bold">Set Validator</h1>
         <input id="register_key" v-model="register_key" placeholder="Validator public key" class="mb-2 me-2 w-full py-2 border border-indigo-500 rounded" />
-        <button v-if="register_key !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(register_key)">Link</button>
+        <button v-if="register_key !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(register_key)" :class="validator_key_valid? 'is-valid':'is-invalid'" id="validatorKey" aria-describedby="validationValidatorKey" required>Link</button>
+        <div id="validationValidatorKey" class="invalid-feedback">
+            Please enter a valid validator public key.
+        </div>
     </div>
     <div v-if="selected_vote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
@@ -89,6 +92,7 @@
                 socket: null,
                 validator_key: '',
                 validator_data: null,
+                validator_key_valid: true,
                 votes: [],
                 decoded_keys: [],
                 client: null,
@@ -348,6 +352,7 @@
                                 console.log('encode-node-public ...', data)
                                 self.decoded_keys[data[account].key] = data[account].key
                                 if (data[account].action === 'listen-validator') {
+                                    self.validator_key_valid = true
                                     self.isLoading = false
                                     self.validator_key = data[account].key
                                     self.socket.send(JSON.stringify({
@@ -355,6 +360,9 @@
                                         channel: data[account].key
                                     }))
                                     console.log('subscribed to socket', data[account].key)
+                                }
+                                if ('error' in data) {
+                                    self.validator_key_valid = false
                                 }
                             }
                             return
