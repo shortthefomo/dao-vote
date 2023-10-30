@@ -113,7 +113,7 @@
             this.$store.dispatch('clientConnect', false)
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
-            await this.accountInfo()
+            await this.fetchAccountInfo()
         },
         computed: {
             ledger() {
@@ -462,7 +462,7 @@
 
 				return bytes
 			},
-            async accountInfo() {
+            async fetchAccountInfo() {
                 console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
                 console.log('this.client', this.client)
 
@@ -489,7 +489,7 @@
                 
                 this.$store.dispatch('setAccountData', res.account_data)
                 this.checkAccountData()
-                this.signerList = await this.signerList()
+                this.signerList = await this.fetchSignerList()
             },
             checkAccountData() {
                 const account_data = this.$store.getters.getAccountData
@@ -516,7 +516,7 @@
                     this.regularKey = false
                 }
             },
-            async signerList(marker = undefined) {
+            async fetchSignerList(marker = undefined) {
                 this.$store.dispatch('clearSignerList')
 
                 let found = false
