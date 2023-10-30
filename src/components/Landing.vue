@@ -491,7 +491,10 @@
                 console.log('masterKey', this.masterKey)
                 console.log('regularKey', this.regularKey)
                 console.log('signerList', this.signerList)
-                console.log('SingerLists', this.$store.getters.getSignerLists)
+                if (this.$store.getters.getSignerLists.length > 0) {
+                    console.log('SingerLists', this.$store.getters.getSignerLists[0])    
+                }
+                
                 this.isLoading = false
             },
             checkAccountData() {
