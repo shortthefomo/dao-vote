@@ -43,6 +43,9 @@ export const AppStore = {
         clearSignerList({commit}) {
             commit('CLEAR_SIGNER_LIST')
         },
+        setSignerList({commit}, data) {
+            commit('SIGNER_LIST', data)
+        },
         setAccountData({commit}, data) {
             commit('ACCOUNT_DATA', data)
         }
