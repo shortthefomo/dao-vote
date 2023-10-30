@@ -347,7 +347,7 @@
                                     self.submitMessageKey(data[account].key, data[account].initial)
                                     console.log('subscribed to socket', data[account].initial)
                                 }
-                                if ('error' in data[account] && self.validator_data !== null) {
+                                if ('error' in data[account] && self.validator_data === null) {
                                     self.validator_key_valid = false
                                     console.log('validator_key_valid setting input to error state')
                                 }
