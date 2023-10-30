@@ -494,10 +494,7 @@
                 console.log('masterKey', this.masterKey)
                 console.log('regularKey', this.regularKey)
                 console.log('signerList', this.signerList)
-                if (this.$store.getters.getSignerLists.length > 0) {
-                    console.log('SingerList[0]', this.$store.getters.getSignerLists[0])
-                }
-                
+                console.log('SingerLists', this.$store.getters.getSignerLists)
             },
             checkAccountData() {
                 const account_data = this.$store.getters.getAccountData
