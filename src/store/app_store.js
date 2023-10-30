@@ -12,6 +12,8 @@ export const AppStore = {
         client: null,
         servers: [],
         account: '',
+        account_data: {},
+        signer_lists: [],
         user_token: '',
         ledger: 0,
         data: {}
@@ -38,6 +40,12 @@ export const AppStore = {
         setClientServers({commit}, servers) {
             commit('SERVERS', servers)
         },
+        clearSignerList({commit}) {
+            commit('CLEAR_SIGNER_LIST')
+        },
+        setAccountData({commit}, data) {
+            commit('ACCOUNT_DATA', data)
+        }
     },
     mutations: {
         TOKEN_DATA(state, data) {
@@ -72,6 +80,13 @@ export const AppStore = {
                 state.client = new XrplClient(state.servers)
             }
         },
+        ACCOUNT_DATA(state, data) {
+            state.account_data = data
+        },
+        SIGNER_LIST(state, data) {
+            if (!('SignerListID' in data)) { return }
+            state.signer_lists[data.SignerListID] = data
+        }
     },
     getters: {
         getVersion: state => {
@@ -95,5 +110,17 @@ export const AppStore = {
         getClient: state => {
             return state.client
         },
+        getAccountData: (state) => {
+            return state.account_data
+        },
+        getSignerLists: (state) => {
+            return state.signer_lists
+        },
+        getSignerList: (state) => (key) => {
+            if (key in state.signer_lists) {
+                return state.signer_lists[key]
+            }
+            return []
+        }
     }
 }

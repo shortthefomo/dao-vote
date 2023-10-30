@@ -79,6 +79,7 @@
 </template>
 
 <script>
+    import { flagNames } from 'flagnames'
     import { Buffer } from 'buffer'
     const xapp = window.xAppSdk
 
@@ -96,7 +97,10 @@
                 votes: [],
                 decoded_keys: [],
                 client: null,
-                set_key: false
+                set_key: false,
+                masterKey: true,
+                regularKey: false,
+                signerList: false
             }
         },
         async mounted() {
@@ -483,35 +487,74 @@
                     this.isLoading = false
                 }
                 
-                // this.$store.dispatch('setAccountData', res.account_data)
+                this.$store.dispatch('setAccountData', res.account_data)
+                this.checkAccountData()
+            },
+            checkAccountData() {
+                const account_data = this.$store.getters.getAccountData
+                console.log('getAccountData', account_data)
+                const flags = flagNames(account_data.LedgerEntryType, account_data.Flags)
+                console.log('flags', flags)
 
-                // const account_data = this.$store.getters.getAccountData
-                // console.log('getAccountData', account_data)
-                // const flags = flagNames(account_data.LedgerEntryType, account_data.Flags)
-                // console.log('flags', flags)
+                // check if master key enabled.
+                if (flags.includes('lsfDisableMaster')) {
+                    this.masterKey = false
+                    console.log('masterkey disabled')
+                }
+                else {
+                    this.masterKey = true
+                    console.log('masterkey enabled')
+                }
 
-                // // check if master key enabled.
-                // if (flags.includes('lsfDisableMaster')) {
-                //     this.masterKey = false
-                //     console.log('masterkey disabled')
-                // }
-                // else {
-                //     this.masterKey = true
-                //     console.log('masterkey enabled')
-                // }
+                if ('RegularKey' in account_data) {
+                    this.regularKeyAddress = account_data.RegularKey
+                    this.regularKey = true
+                }
+                else {
+                    this.regularKeyAddress = null
+                    this.regularKey = false
+                }
+                this.signerList = await this.signerList()
+            },
+            async signerList(marker = undefined) {
+                this.$store.dispatch('clearSignerList')
 
-                // if ('RegularKey' in account_data) {
-                //     this.regularKeyAddress = account_data.RegularKey
-                //     this.regularKey = true
-                // }
-                // else {
-                //     this.regularKeyAddress = null
-                //     this.regularKey = false
-                // }
+                let found = false
+                const payload = {
+                    'id': 2,
+                    'command': 'account_objects',
+                    'account': this.$store.getters.getAccount,
+                    'ledger_index': 'validated',
+                    'limit': 400
+                }
+                if (marker != undefined) {
+                    payload.marker = marker
+                }
+                let account_objects = await this.client.send(payload)
+                // console.log('signerList', account_objects)
+                for (let index = 0; index < account_objects.account_objects.length; index++) {
+                    const element = account_objects.account_objects[index]
+                    if (element.LedgerEntryType === 'SignerList') {
+                        console.log('setSignerList element', element)
+                        this.$store.dispatch('setSignerList', element)
+                        found = true
+                    }
+                }
+                if (account_objects['marker'] !== undefined) {
+                    return await this.checkSignerList(account_objects['marker'])
+                }
 
-                // const tokenData = this.$store.getters.getXummTokenData
-                // this.accountAccess = tokenData.accountaccess
-                // console.log('this.accountAccess', this.accountAccess)
+                if (found) {
+                    // console.log('signerLists', this.$store.getters.getSignerLists)
+                    const signer_lists = this.$store.getters.getSignerLists
+                    for (let index = 0; index < signer_lists.length; index++) {
+                        const element = signer_lists[index]
+                        console.log('signer_list', element)    
+                        console.log('flags', flagNames(element.LedgerEntryType, element.Flags))
+                    }
+                }
+
+                return found
             },
             secondsToString(seconds) {
                 let value = seconds

@@ -16,6 +16,7 @@
         "bootstrap-icons": "^1.10.5",
         "buffer": "^6.0.3",
         "events": "^3.3.0",
+        "flagnames": "^1.0.6",
         "ripple-address-codec": "^4.3.1",
         "vite-plugin-mkcert": "^1.16.0",
         "vue": "^3.3.4",
