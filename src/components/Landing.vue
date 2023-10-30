@@ -363,6 +363,7 @@
                                 }
                                 if ('error' in data[account]) {
                                     self.validator_key_valid = false
+                                    log('validator_key_valid setting input to error state')
                                 }
                             }
                             return
