@@ -347,6 +347,10 @@
                                     self.submitMessageKey(data[account].key, data[account].initial)
                                     console.log('subscribed to socket', data[account].initial)
                                 }
+                                if ('error' in data[account]) {
+                                    self.validator_key_valid = false
+                                    log('validator_key_valid setting input to error state')
+                                }
                             }
                             if (data[account].topic === 'encode-node-public') {
                                 console.log('encode-node-public ...', data)
@@ -360,10 +364,6 @@
                                         channel: data[account].key
                                     }))
                                     console.log('subscribed to socket', data[account].key)
-                                }
-                                if ('error' in data[account]) {
-                                    self.validator_key_valid = false
-                                    log('validator_key_valid setting input to error state')
                                 }
                             }
                             return
