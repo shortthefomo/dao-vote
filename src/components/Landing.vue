@@ -454,6 +454,7 @@
                 }
                 console.log(payload)
                 let res = await this.client.send(payload)
+                if ('error' in res) { return }
                 console.log('accountInfo')
                 console.log(res)
 
