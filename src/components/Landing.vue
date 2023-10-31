@@ -65,8 +65,8 @@
             <p class="text-center" v-if="isLoading">Loading validator..</p>
         </div>
     </div>
-    <div v-else-if="validatorKey === '' && isLoading === false" class="mb-5">
-        <h1 class="display-5 fw-bold">Set Validator</h1>
+    <div v-else-if="validatorKey === '' && isLoading === false">
+        <h1 class="display-5 fw-bold">Set Validator Info</h1>
         <input id="register_key" v-model="registerKey" placeholder="Validator public key" :class="validatorKeyValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validationValidatorKey" required/>
         <button v-if="registerKey !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(registerKey)">Link</button>
         <div id="validationValidatorKey" class="invalid-feedback">
@@ -74,8 +74,7 @@
         </div>
     </div>
     <div v-if="daemonKey === '' && isLoading === false" class="mb-5">
-        <h1 class="display-5 fw-bold">Set Validator rAddress</h1>
-        <input id="validator_daemon" v-model="daemonKey" placeholder="Validator public key" :class="validatorDaemonValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validatorDaemonKey" required/>
+        <input id="validator_daemon" v-model="daemonKey" placeholder="Validator daemon rAddress" :class="validatorDaemonValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validatorDaemonKey" required/>
         <button v-if="registerKey !== ''" type="button" class="btn btn-primary" @click="assignValidatorDaemonKey(daemonKey)">Link</button>
         <div id="validatorDaemonKey" class="invalid-feedback">
             Please enter a valid public rAddress.
