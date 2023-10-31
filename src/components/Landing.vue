@@ -275,12 +275,25 @@
             async assignValidatorKey(key) {
                 console.log(key)
 
-                await this.waitForOpenConnection(this.socket)
-                console.log('sending', {channel: this.$store.getters.getAccount, topic: 'decode-node-public', action: 'set-validator-key', key})
+                // await this.waitForOpenConnection(this.socket)
+                // console.log('sending', {channel: this.$store.getters.getAccount, topic: 'decode-node-public', action: 'set-validator-key', key})
                 const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public`)
                 console.log('assignValidatorKey', data)
                 
-                this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
+                // this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
+
+                if (data !== undefined && 'decoded' in data) {
+                    console.log('keys', data.decoded, key)
+                                
+                    if (data[account].action === 'set-validator-key') {
+                        this.submitMessageKey(data.decoded, key)
+                        console.log('subscribed to socket', key)
+                        this.validator_key_valid = true
+                    }
+                }
+                else {
+                    this.validator_key_valid = false
+                }
             },
             setValidator(key) {
                 // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
@@ -495,8 +508,9 @@
                     const { data } = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`)
                     
                     console.log('encode-node-public ...', data)
-                    console.log('keys', data.encode, res.account_data.MessageKey)
+                    
                     if (data !== undefined && 'encoded' in data) {
+                        console.log('keys', data.encoded, res.account_data.MessageKey)
                         this.decoded_keys[data.encoded] = data.encoded
                         this.validator_key_valid = true
                         this.validator_key = data.encoded
@@ -506,7 +520,6 @@
                         }))
                         console.log('subscribed to socket', data.encoded)
                     }
-                    
                 }
                 
                 this.$store.dispatch('setAccountData', res.account_data)
