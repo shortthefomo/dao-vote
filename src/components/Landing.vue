@@ -7,28 +7,28 @@
             </div>
             <div class="col-md-12 fs-6">
                 <p class="text">
-                    Validator: {{ validator_key.substring(0, 8) }}...
+                    Validator: {{ validatorKey.substring(0, 8) }}...
                 </p>
-                <p v-if="validator_data !== null" class="text text-break">
-                    Version: {{ validator_data.server_version }}
+                <p v-if="validatorData !== null" class="text text-break">
+                    Version: {{ validatorData.server_version }}
                 </p>
-                <p v-if="validator_data !== null" class="text text-break">
-                    Latest Version: {{ validator_data.latest_version }}
+                <p v-if="validatorData !== null" class="text text-break">
+                    Latest Version: {{ validatorData.latest_version }}
                 </p>
-                <p v-if="validator_data !== null" class="text">
-                    Ledger Index: {{ validator_data.ledger_index }}
+                <p v-if="validatorData !== null" class="text">
+                    Ledger Index: {{ validatorData.ledger_index }}
                 </p>
-                <!-- <p v-if="validator_data !== null" class="text">
-                    Base Fee: {{ validator_data.base_fee }}
+                <!-- <p v-if="validatorData !== null" class="text">
+                    Base Fee: {{ validatorData.base_fee }}
                 </p>
-                <p v-if="validator_data !== null" class="text">
-                    Load Fee: {{ validator_data.load_fee }}
+                <p v-if="validatorData !== null" class="text">
+                    Load Fee: {{ validatorData.load_fee }}
                 </p> -->
-                <p v-if="validator_data !== null" class="text">
-                    State: {{ validator_data.state }}
+                <p v-if="validatorData !== null" class="text">
+                    State: {{ validatorData.state }}
                 </p>
-                <p v-if="validator_data !== null" class="text">
-                    Last seen: {{ secondsToString((Date.now() - validator_data.last_seen) / 1000).toString() }}
+                <p v-if="validatorData !== null" class="text">
+                    Last seen: {{ secondsToString((Date.now() - validatorData.last_seen) / 1000).toString() }}
                 </p>
                 <p v-if="signers.length > 0">
                     SignerQuorum: {{ $store.getters.getSignerList(0).SignerQuorum }}
@@ -36,11 +36,11 @@
                 <p v-for="signer in signers">
                     <i :class="(signer.SignerEntry.Registered) ? 'bi bi-check-square-fill':'bi bi-dash-square-dotted'"></i> <i :class="`bi bi-${signer.SignerEntry.SignerWeight}-square${(signer.SignerEntry.Registered) ? '-fill':''}`"></i> {{ signer.SignerEntry.Account.substring(0, 8) }}...
                 </p>
-                <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
+                <button v-if="validatorKey !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
         </div>
     </div>
-    <div v-if="validator_data !== null && validator_key !== ''" class="py-5 mb-4">
+    <div v-if="validatorData !== null && validatorKey !== ''" class="py-5 mb-4">
         <h1 class="display-5 fw-bold">Voting Status</h1>
         <div class="container-fluid pb-5">
             <table class="table">
@@ -59,21 +59,21 @@
             </table>
         </div>
     </div>
-    <div v-else-if="validator_key !== ''">
+    <div v-else-if="validatorKey !== ''">
         <div class="container-fluid mb-5 p-2 bg-light">
             <h3 class="fw-bold text-center">{Waiting for validators data}</h3>
             <p class="text-center" v-if="isLoading">Loading validator..</p>
         </div>
     </div>
-    <div v-else-if="validator_key === '' && isLoading === false" class="mb-5">
+    <div v-else-if="validatorKey === '' && isLoading === false" class="mb-5">
         <h1 class="display-5 fw-bold">Set Validator</h1>
-        <input id="register_key" v-model="register_key" placeholder="Validator public key" :class="validator_key_valid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validationValidatorKey" required/>
+        <input id="register_key" v-model="register_key" placeholder="Validator public key" :class="validatorKeyValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validationValidatorKey" required/>
         <button v-if="register_key !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(register_key)">Link</button>
         <div id="validationValidatorKey" class="invalid-feedback">
             Please enter a valid validator public key.
         </div>
     </div>
-    <div v-if="selected_vote.length > 0">
+    <div v-if="selectedVote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
         <a class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay">Vote Yay</a>
         <a class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay">Vote Nay</a>
@@ -95,11 +95,11 @@
         data() {
             return {
                 isLoading: true,
-                selected_vote: [],
+                selectedVote: [],
                 socket: null,
-                validator_key: '',
-                validator_data: null,
-                validator_key_valid: true,
+                validatorKey: '',
+                validatorData: null,
+                validatorKeyValid: true,
                 votes: [],
                 signers: [],
                 decoded_keys: [],
@@ -112,10 +112,20 @@
         async mounted() {
             console.log('landing mounted...')
             // await this.fetchStorage()
-            if (this.$store.getters.getAccount != '') {
+            if (this.$store.getters.getAccount === '') {
                 console.log('landing logged in...')
+                return
             }
 
+            
+            console.log('Account', this.$store.getters.getAccount)
+            const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+            const Payload = {
+                Accounts: [this.$store.getters.getAccount]
+            }
+            const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+            console.log('Is Registered new user', data[0].Registered)
+            
             this.$store.dispatch('clientConnect', false)
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
@@ -132,16 +142,6 @@
                 }
                 const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 console.log('Registered new user', data)
-            }
-
-            if (this.$store.getters.getAccount !== '') {
-                console.log('Account', this.$store.getters.getAccount)
-                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                const Payload = {
-                    Accounts: [this.$store.getters.getAccount]
-                }
-                const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                console.log('Is Registered new user', data[0].Registered)
             }
         },
         computed: {
@@ -162,14 +162,14 @@
         },
         methods: {
             async voteYay() {
-                console.log('voteYay', this.selected_vote)
-                if (this.decoded_keys[this.validator_key] === undefined) {
-                    console.log(`this validators key has not been decoded key ${this.validator_key}`)
+                console.log('voteYay', this.selectedVote)
+                if (this.decoded_keys[this.validatorKey] === undefined) {
+                    console.log(`this validators key has not been decoded key ${this.validatorKey}`)
                     return
                 }
                 const Memos =[{
                     Memo: {
-                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: false }), 'utf-8').toString('hex').toUpperCase(),
+                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selectedVote, position: false }), 'utf-8').toString('hex').toUpperCase(),
                         MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
                     }
                 }]
@@ -177,7 +177,7 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    // MessageKey: this.decoded_keys[this.validator_key],
+                    // MessageKey: this.decoded_keys[this.validatorKey],
                     Memos
                 }
 
@@ -185,14 +185,14 @@
                 this.submitVote({ txjson: payload })
             },
             async voteNay() {
-                console.log('voteNay', this.selected_vote)
-                if (this.decoded_keys[this.validator_key] === undefined) {
-                    console.log(`this validators key has not been decoded key ${this.validator_key}`)
+                console.log('voteNay', this.selectedVote)
+                if (this.decoded_keys[this.validatorKey] === undefined) {
+                    console.log(`this validators key has not been decoded key ${this.validatorKey}`)
                     return
                 }
                 const Memos =[{
                     Memo: {
-                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selected_vote, position: true }), 'utf-8').toString('hex').toUpperCase(),
+                        MemoData: Buffer.from(JSON.stringify({topic: 'amendment', amendment_vote: this.selectedVote, position: true }), 'utf-8').toString('hex').toUpperCase(),
                         MemoFormat: Buffer.from('json', 'utf-8').toString('hex').toUpperCase()
                     }
                 }]
@@ -200,7 +200,7 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    // MessageKey: this.decoded_keys[this.validator_key],
+                    // MessageKey: this.decoded_keys[this.validatorKey],
                     Memos
                 }
 
@@ -265,13 +265,13 @@
 
                     if (event.data.signed === true) {
                         if (key === '') {
-                            self.validator_key = ''
-                            self.validator_data = null
+                            self.validatorKey = ''
+                            self.validatorData = null
                             self.accountInfo()
                         }
                         if (initial !== '') {
                             self.isLoading = false
-                            self.validator_key = initial
+                            self.validatorKey = initial
                             self.socket.send(JSON.stringify({
                                 op: 'subscribe',
                                 channel: initial
@@ -301,29 +301,29 @@
                 if (data !== undefined && 'decoded' in data && !('error' in data)) {
                     console.log('keys', data.decoded, key)
                     this.submitMessageKey(data.decoded, key)
-                    this.validator_key_valid = true
+                    this.validatorKeyValid = true
                 }
                 else {
-                    this.validator_key_valid = false
+                    this.validatorKeyValid = false
                 }
             },
             highlights(amendment) {
-                if (this.selected_vote.includes(amendment.hash)) {
+                if (this.selectedVote.includes(amendment.hash)) {
                     return 'table-secondary'
                 }
-                if (this.selected_vote.includes(amendment.hash)) {
+                if (this.selectedVote.includes(amendment.hash)) {
                     return 'table-warning'
                 }
                 return ''
             },
             selectedRow(amendment) {
-                if (!this.selected_vote.includes(amendment.hash)) {
-                    this.selected_vote.push(amendment.hash)
+                if (!this.selectedVote.includes(amendment.hash)) {
+                    this.selectedVote.push(amendment.hash)
                 }
                 else {
-                    this.selected_vote.splice(this.selected_vote.indexOf(amendment.hash), 1)
+                    this.selectedVote.splice(this.selectedVote.indexOf(amendment.hash), 1)
                 }
-                console.log('Selected items', this.selected_vote)
+                console.log('Selected items', this.selectedVote)
             },
             async waitForOpenConnection(socket) {
                 return new Promise((resolve, reject) => {
@@ -373,19 +373,19 @@
 
                     const data  = JSON.parse(message.data)
                     // console.log('data', data)
-                    const validator = self.validator_key
+                    const validator = self.validatorKey
                     if (data[validator] !== undefined) {
-                        self.validator_data = data[validator]
-                        // console.log(self.validator_data)
+                        self.validatorData = data[validator]
+                        // console.log(self.validatorData)
                         self.votes = []
-                        for (const [key, value] of Object.entries(self.validator_data.votable_amendments.nay)) {
+                        for (const [key, value] of Object.entries(self.validatorData.votable_amendments.nay)) {
                             self.votes.push({
                                 hash: key,
                                 label: value,
                                 flag: 'nay'
                             })
                         }
-                        for (const [key, value] of Object.entries(self.validator_data.votable_amendments.yay)) {
+                        for (const [key, value] of Object.entries(self.validatorData.votable_amendments.yay)) {
                             self.votes.push({
                                 hash: key,
                                 label: value,
@@ -400,8 +400,8 @@
                 }
 
                 this.socket.onclose = function (message) {
-                    self.validator_data = null
-                    self.selected_vote = []
+                    self.validatorData = null
+                    self.selectedVote = []
                     self.votes = []
                     console.log('socket disconnected!', message)
                     if (self.timeout_socket == null && message.code != 1005) {
@@ -480,8 +480,8 @@
                     if (data !== undefined && 'encoded' in data && !('error' in data)) {
                         console.log('keys', data.encoded, res.account_data.MessageKey)
                         this.decoded_keys[data.encoded] = data.encoded
-                        this.validator_key_valid = true
-                        this.validator_key = data.encoded
+                        this.validatorKeyValid = true
+                        this.validatorKey = data.encoded
                         await this.waitForOpenConnection(this.socket)
                         this.socket.send(JSON.stringify({
                             op: 'subscribe',
