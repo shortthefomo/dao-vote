@@ -277,7 +277,7 @@
 
                 // await this.waitForOpenConnection(this.socket)
                 // console.log('sending', {channel: this.$store.getters.getAccount, topic: 'decode-node-public', action: 'set-validator-key', key})
-                const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public`)
+                const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${res.account_data.MessageKey}`)
                 console.log('assignValidatorKey', data)
                 
                 // this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
@@ -365,39 +365,39 @@
                     const data  = JSON.parse(message.data)
                     // console.log('data', data)
                     const account = self.$store.getters.getAccount
-                    if (data[account] !== undefined) {
-                        if ('topic' in data[account]) {
-                            if (data[account].topic === 'decode-node-public') {
-                                console.log('decode-node-public ...', data)
+                    // if (data[account] !== undefined) {
+                    //     if ('topic' in data[account]) {
+                    //         if (data[account].topic === 'decode-node-public') {
+                    //             console.log('decode-node-public ...', data)
                                 
-                                if (data[account].action === 'set-validator-key') {
-                                    self.submitMessageKey(data[account].key, data[account].initial)
-                                    console.log('subscribed to socket', data[account].initial)
-                                }
-                                if ('error' in data[account] && self.validator_data === null) {
-                                    self.validator_key_valid = false
-                                    console.log('validator_key_valid setting input to error state')
-                                }
-                                else {
-                                    self.validator_key_valid = true
-                                }
-                            }
-                            if (data[account].topic === 'encode-node-public') {
-                                console.log('encode-node-public ...', data)
-                                self.decoded_keys[data[account].key] = data[account].key
-                                if (data[account].action === 'listen-validator') {
-                                    self.validator_key_valid = true
-                                    self.validator_key = data[account].key
-                                    self.socket.send(JSON.stringify({
-                                        op: 'subscribe',
-                                        channel: data[account].key
-                                    }))
-                                    console.log('subscribed to socket', data[account].key)
-                                }
-                            }
-                            return
-                        }
-                    }
+                    //             if (data[account].action === 'set-validator-key') {
+                    //                 self.submitMessageKey(data[account].key, data[account].initial)
+                    //                 console.log('subscribed to socket', data[account].initial)
+                    //             }
+                    //             if ('error' in data[account] && self.validator_data === null) {
+                    //                 self.validator_key_valid = false
+                    //                 console.log('validator_key_valid setting input to error state')
+                    //             }
+                    //             else {
+                    //                 self.validator_key_valid = true
+                    //             }
+                    //         }
+                    //         if (data[account].topic === 'encode-node-public') {
+                    //             console.log('encode-node-public ...', data)
+                    //             self.decoded_keys[data[account].key] = data[account].key
+                    //             if (data[account].action === 'listen-validator') {
+                    //                 self.validator_key_valid = true
+                    //                 self.validator_key = data[account].key
+                    //                 self.socket.send(JSON.stringify({
+                    //                     op: 'subscribe',
+                    //                     channel: data[account].key
+                    //                 }))
+                    //                 console.log('subscribed to socket', data[account].key)
+                    //             }
+                    //         }
+                    //         return
+                    //     }
+                    // }
                     const validator = self.validator_key //self.$store.getters.getAccount
                     if (data[validator] !== undefined) {
                         self.validator_data = data[validator]
