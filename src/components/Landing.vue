@@ -492,19 +492,19 @@
                     // console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'listen-validator', key: res.account_data.MessageKey})
                     // this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'listen-validator', key: res.account_data.MessageKey}))
 
-                    const { data } = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`)
+                    const { data } = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`, { timeout: 2000 })
                     
                     console.log('encode-node-public ...', data)
-                    console.log('res.account_data.MessageKey', res.account_data.MessageKey)
+                    console.log('keys', data.encode, res.account_data.MessageKey)
                     if (data !== undefined && 'encoded' in data) {
                         this.decoded_keys[data.encoded] = data.encoded
                         this.validator_key_valid = true
                         this.validator_key = data.encoded
                         this.socket.send(JSON.stringify({
                             op: 'subscribe',
-                            channel: data[account].key
+                            channel: data.encoded
                         }))
-                        console.log('subscribed to socket', data[account].key)
+                        console.log('subscribed to socket', data.encoded)
                     }
                     
                 }
