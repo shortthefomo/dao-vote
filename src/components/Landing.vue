@@ -67,10 +67,18 @@
     </div>
     <div v-else-if="validatorKey === '' && isLoading === false" class="mb-5">
         <h1 class="display-5 fw-bold">Set Validator</h1>
-        <input id="register_key" v-model="register_key" placeholder="Validator public key" :class="validatorKeyValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validationValidatorKey" required/>
-        <button v-if="register_key !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(register_key)">Link</button>
+        <input id="register_key" v-model="registerKey" placeholder="Validator public key" :class="validatorKeyValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validationValidatorKey" required/>
+        <button v-if="registerKey !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(registerKey)">Link</button>
         <div id="validationValidatorKey" class="invalid-feedback">
             Please enter a valid validator public key.
+        </div>
+    </div>
+    <div v-else-if="daemonKey === '' && isLoading === false" class="mb-5">
+        <h1 class="display-5 fw-bold">Set Validator</h1>
+        <input id="validator_daemon" v-model="daemonKey" placeholder="Validator public key" :class="validatorDaemonValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validatorDaemonKey" required/>
+        <button v-if="registerKey !== ''" type="button" class="btn btn-primary" @click="assignValidatorDaemonKey(daemonKey)">Link</button>
+        <div id="validatorDaemonKey" class="invalid-feedback">
+            Please enter a valid public rAddress.
         </div>
     </div>
     <div v-if="selectedVote.length > 0">
@@ -85,6 +93,7 @@
 </template>
 
 <script>
+    import xcodec from 'xrpl-tagged-address-codec'
     import { flagNames } from 'flagnames'
     import { Buffer } from 'buffer'
     const xapp = window.xAppSdk
@@ -98,9 +107,12 @@
                 isMultisigSigner: false,
                 selectedVote: [],
                 socket: null,
+                registerKey: '',
                 validatorKey: '',
+                daemonKey: '',
                 validatorData: null,
                 validatorKeyValid: true,
+                validatorDaemonValid: true,
                 votes: [],
                 signers: [],
                 decoded_keys: [],
@@ -260,6 +272,11 @@
                 // lock it to testnet for testing right now
                 // const tokenData = this.$store.getters.getXummTokenData
                 // if (tokenData.nodetype !== 'TESTNET') { return }
+                
+                if (signerList) {
+
+
+                }
 
                 const self = this
                 const subscription = await this.Sdk.payload.createAndSubscribe(XummPayload, async event => {
@@ -308,6 +325,17 @@
                 else {
                     this.validatorKeyValid = false
                 }
+            },
+            async assignValidatorDaemonKey(address) {
+                console.log('validd....', xcodec.addressValid(address))
+                this.validatorDaemonValid = xcodec.addressValid(address)
+
+                // const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                // const Payload = {
+                //     Daemon: key
+                // }
+                // const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/validatorDaemon?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+
             },
             highlights(amendment) {
                 if (this.selectedVote.includes(amendment.hash)) {
