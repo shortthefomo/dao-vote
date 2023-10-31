@@ -34,7 +34,7 @@
                     SignerQuorum: {{ $store.getters.getSignerList(0).SignerQuorum }}
                 </p>
                 <p v-for="signer in signers">
-                    Signer: {{ signer.SignerEntry.Account }}
+                    Signer: {{ signer.SignerEntry.Account.substring(0, 8) }}...
                     Registered: {{ signer.SignerEntry.Registered }}
                     SignerWeight: {{ signer.SignerEntry.SignerWeight }}
                 </p>
