@@ -219,7 +219,7 @@
                     Memos
                 }
 
-                console.log('payload', payload)
+                console.log('Tx Payload', payload)
                 this.submitVote({ txjson: payload })
             },
             async submitVote(payload) {
@@ -235,7 +235,7 @@
                         submit: false
                     }
                 }
-
+                console.log('Xumm Payload', XummPayload)
                 const self = this
                 const subscription = await this.Sdk.payload.createAndSubscribe(payload, async event => {
                     console.log('New payload event:', event.data)
