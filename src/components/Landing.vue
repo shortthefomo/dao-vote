@@ -272,14 +272,7 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async assignValidatorKey(key) {
-                console.log(key)
-
-                // await this.waitForOpenConnection(this.socket)
-                // console.log('sending', {channel: this.$store.getters.getAccount, topic: 'decode-node-public', action: 'set-validator-key', key})
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${key}`)
-                console.log('assignValidatorKey', data)
-                
-                // this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
 
                 if (data !== undefined && 'decoded' in data && !('error' in data)) {
                     console.log('keys', data.decoded, key)
