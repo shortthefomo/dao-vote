@@ -561,7 +561,7 @@
                 this.isLoading = false
             },
             checkAccountData() {
-                const account_data = this.daemonKey
+                const account_data = this.$store.getters.getAccountData
                 console.log('getAccountData', account_data)
                 const flags = flagNames(account_data.LedgerEntryType, account_data.Flags)
                 console.log('flags', flags)
