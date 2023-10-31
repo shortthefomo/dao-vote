@@ -25,7 +25,6 @@
         "vue-router": "^4.2.2",
         "vuex": "^4.0.2",
         "xrpl-client": "^2.0.11",
-        "xrpl-tagged-address-codec": "^0.2.1",
         "xumm-sdk": "^1.8.6"
     },
     "devDependencies": {

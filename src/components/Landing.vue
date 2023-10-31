@@ -92,7 +92,7 @@
 </template>
 
 <script>
-    import { xcodec } from 'xrpl-tagged-address-codec'
+    import codec from 'ripple-address-codec'
     import { flagNames } from 'flagnames'
     import { Buffer } from 'buffer'
     const xapp = window.xAppSdk
@@ -330,8 +330,8 @@
                 }
             },
             async assignValidatorDaemonKey(address) {
-                console.log('validd....', xcodec.addressValid(address))
-                this.validatorDaemonValid = xcodec.addressValid(address)
+                console.log('validd....', codec.isValidAddress(address))
+                this.validatorDaemonValid = codec.isValidAddress(address)
 
                 // const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 // const Payload = {
