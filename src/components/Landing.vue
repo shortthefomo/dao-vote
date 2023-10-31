@@ -92,7 +92,7 @@
 </template>
 
 <script>
-    import xcodec from 'xrpl-tagged-address-codec'
+    import { xcodec } from 'xrpl-tagged-address-codec'
     import { flagNames } from 'flagnames'
     import { Buffer } from 'buffer'
     const xapp = window.xAppSdk
