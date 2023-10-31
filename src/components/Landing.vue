@@ -148,7 +148,9 @@
                 this.validatorKey = data.Validator
                 this.daemonKey = data.Daemon
             }
-
+            console.log('validatorKey', this.validatorKey)
+            console.log('daemonKey', this.daemonKey)
+            
             this.$store.dispatch('clientConnect', false)
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
