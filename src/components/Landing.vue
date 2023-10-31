@@ -227,7 +227,7 @@
                         return false
                     }
                 })
-                console.log('setSignerList', subscription)
+                console.log('subscription', subscription)
 
                 xapp.openSignRequest({ uuid: subscription.created.uuid })
                     .then(d => {
@@ -280,7 +280,7 @@
                         return false
                     }
                 })
-                console.log('setSignerList', subscription)
+                console.log('subscription', subscription)
 
                 xapp.openSignRequest({ uuid: subscription.created.uuid })
                     .then(d => {
@@ -493,8 +493,10 @@
                 console.log('regularKey', this.regularKey)
                 console.log('signerList', this.signerList)
                 if (this.$store.getters.getSignerLists.length > 0) {
-                    console.log('SingerLists', this.$store.getters.getSignerLists[0])    
+                    console.log('SingerLists', this.$store.getters.getSignerLists[0]) 
                 }
+
+                console.log('xxxxxx SingerList', this.$store.getters.getSignerList(0))
                 
                 this.isLoading = false
             },
