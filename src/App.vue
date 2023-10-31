@@ -95,7 +95,7 @@
                 this.$store.dispatch('setClientServers', this.servers)
                 this.$store.dispatch('clientConnect', false)
                 this.client = this.$store.getters.getClient
-
+                await this.jwtSignIn()
                 this.currentLedger()
             },
             async jwtSignIn() {
