@@ -285,7 +285,7 @@
                 if (data !== undefined && 'decoded' in data && !('error' in data)) {
                     console.log('keys', data.decoded, key)
                                 
-                    if (data[account].action === 'set-validator-key') {
+                    if (data.decoded === 'set-validator-key') {
                         this.submitMessageKey(data.decoded, key)
                         this.validator_key_valid = true
                     }
