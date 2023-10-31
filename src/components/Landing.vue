@@ -492,32 +492,36 @@
                 console.log('signerList', this.signerList)
                 console.log('SingerList', this.$store.getters.getSignerList(0))
                 const list = this.$store.getters.getSignerList(0)
-                this.signers = list.SignerEntries
+                if (list.SignerEntries !== undefined) { 
+                    this.signers = list.SignerEntries
 
-                console.log('DEBUUUGGG 22222')
-                // console.log('Account', this.$store.getters.getAccount)
-                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                const accounts = []
-                for (let index = 0; index < this.signers.length; index++) {
-                    const entry = this.signers[index].SignerEntry
-                    console.log('entry', entry)
-                    accounts.push(entry.Account)
-                }
-                const Payload = {
-                    Accounts: accounts
-                }
-                console.log('Payload', Payload)
-                const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                console.log('isregistered', data)
-                //Registered
-                for (let index = 0; index < data.length; index++) {
-                    const element = data[index]
-                    for (let item = 0; item < this.signers.length; item++) {
-                        if (this.signers[item].SignerEntry.Account === element.Account) {
-                            this.signers[item].SignerEntry.Registered = element.Registered
+                    console.log('DEBUUUGGG 22222')
+                    // console.log('Account', this.$store.getters.getAccount)
+                    const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                    const accounts = []
+                    for (let index = 0; index < this.signers.length; index++) {
+                        const entry = this.signers[index].SignerEntry
+                        console.log('entry', entry)
+                        accounts.push(entry.Account)
+                    }
+                    const Payload = {
+                        Accounts: accounts
+                    }
+                    console.log('Payload', Payload)
+                    const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                    console.log('isregistered', data)
+                    //Registered
+                    for (let index = 0; index < data.length; index++) {
+                        const element = data[index]
+                        for (let item = 0; item < this.signers.length; item++) {
+                            if (this.signers[item].SignerEntry.Account === element.Account) {
+                                this.signers[item].SignerEntry.Registered = element.Registered
+                            }
                         }
                     }
+
                 }
+                
 
                 this.isLoading = false
             },
