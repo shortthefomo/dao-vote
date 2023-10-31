@@ -96,9 +96,12 @@
                 await this.jwtSignIn()
                 this.currentLedger()
             },
-            async test(uuid) {
+            async getUUID(uuid) {
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${uuid}`)
-                console.log('test', data)
+                if ('response' in data && 'user' in data.response) {
+                    this.$store.dispatch('setUserToken', data.response.user)
+                    console.log('Set User Token', data.response.user)
+                }
             },
             async jwtSignIn() {
                 const self = this
@@ -111,10 +114,7 @@
                     if (event.data.signed === true) {
                         console.log('Woohoo! The sign request was signed :)')
                         self.signedIn = true
-                        self.$store.dispatch('setUserToken', event.data.payload_uuidv4)
-                        console.log('event', event)
-                        console.log('UUID', event.data.payload_uuidv4)
-                        await self.test(event.data.payload_uuidv4)
+                        await self.getUUID(event.data.payload_uuidv4)
                         self.components.Landing = true
                         return event.data
                     }
