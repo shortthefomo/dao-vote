@@ -491,6 +491,9 @@
                     this.set_key = true
                     console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'listen-validator', key: res.account_data.MessageKey})
                     this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'listen-validator', key: res.account_data.MessageKey}))
+
+                    const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`)
+                    console.log('MessageKeyMessageKeyMessageKey',data)
                 }
                 
                 this.$store.dispatch('setAccountData', res.account_data)
