@@ -68,17 +68,17 @@
     <div v-if="validatorKey === '' && isLoading === false">
         <h1 class="display-5 fw-bold">Set Validator Info</h1>
         <input id="register_key" v-model="registerKey" placeholder="Validator public key" :class="validatorKeyValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validationValidatorKey" required/>
-        <button v-if="registerKey !== ''" type="button" class="btn btn-primary" @click="assignValidatorKey(registerKey)">Link</button>
         <div id="validationValidatorKey" class="invalid-feedback">
             Please enter a valid validator public key.
         </div>
     </div>
     <div v-if="validatorKey === '' && isLoading === false" class="mb-5">
         <input id="validator_daemon" v-model="daemonKey" placeholder="Validator daemon rAddress" :class="validatorDaemonValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validatorDaemonKey" required/>
-        <button v-if="registerKey !== ''" type="button" class="btn btn-primary" @click="assignValidatorDaemonKey(daemonKey)">Link</button>
         <div id="validatorDaemonKey" class="invalid-feedback">
             Please enter a valid public rAddress.
         </div>
+
+        <button v-if="registerKey !== '' && daemonKey !== ''" type="button" class="btn btn-primary" @click="assignValidator(registerKey, daemonKey)">Link</button>
     </div>
     <div v-if="selectedVote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
@@ -312,6 +312,10 @@
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
                     })
                     .catch(e => console.log('Error:', e.message))
+            },
+            async assignValidator(key, address) {
+                await this.assignValidatorKey(key)
+                await this.assignValidatorDaemonKey(key)
             },
             async assignValidatorKey(key) {
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${key}`)
