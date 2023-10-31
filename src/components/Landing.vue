@@ -9,6 +9,9 @@
                 <p class="text">
                     Validator: {{ validatorKey.substring(0, 8) }}...
                 </p>
+                <p class="text">
+                    Daemon: {{ daemonKey.substring(0, 8) }}...
+                </p>
                 <p v-if="validatorData !== null" class="text text-break">
                     Version: {{ validatorData.server_version }}
                 </p>
