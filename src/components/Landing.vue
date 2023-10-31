@@ -253,9 +253,13 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async submitMessageKey(key, initial = '') {
+                if (this.daemonKey === '') { 
+                    console.error('daemonKey not set')
+                    return 
+                }
                 const payload = {
                     TransactionType: 'AccountSet',
-                    Account: this.$store.getters.getAccount,
+                    Account: this.daemonKey,
                     MessageKey: key
                 }
 
@@ -267,6 +271,10 @@
                 }
 
                 const self = this
+
+                if (this.signerList === true) {
+                    console.log('need to do sign request for multisig....')
+                }
                 const subscription = await this.Sdk.payload.createAndSubscribe(XummPayload, async event => {
                     console.log('New payload event:', event.data)
 
@@ -316,6 +324,7 @@
                 await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
             },
             async assignValidatorKey(key) {
+                // here we want to check the daemon account if key has been set first... not the logged in user.
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${key}`)
 
                 if (data !== undefined && 'decoded' in data && !('error' in data)) {
@@ -591,12 +600,13 @@
             },
             async fetchSignerList(marker = undefined) {
                 this.$store.dispatch('clearSignerList')
+                if (this.daemonKey === '') { return }
 
                 let found = false
                 const payload = {
                     'id': 2,
                     'command': 'account_objects',
-                    'account': this.$store.getters.getAccount,
+                    'account': this.daemonKey,
                     'ledger_index': 'validated',
                     'limit': 400
                 }
