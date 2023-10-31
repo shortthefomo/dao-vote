@@ -143,7 +143,7 @@
             }
             
             const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/account?appkey=${import.meta.env.VITE_XUMM_APPKEY}&Account=${this.$store.getters.getAccount}`)
-            console.log('DDDDD', data)
+            // console.log('DDDDD', data)
             if (data !== '' && 'Daemon' in data && 'Validator' in data) {
                 this.validatorKey = data.Validator
                 this.daemonKey = data.Daemon
@@ -256,6 +256,13 @@
                 if (this.daemonKey === '') { 
                     console.error('daemonKey not set')
                     return 
+                }
+                if (key === '') {
+                    const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                    const Payload = {
+                        Account: this.$store.getters.getAccount
+                    }
+                    await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/unregister?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 }
                 const payload = {
                     TransactionType: 'AccountSet',
