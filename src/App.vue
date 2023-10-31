@@ -96,6 +96,10 @@
                 await this.jwtSignIn()
                 this.currentLedger()
             },
+            async test(uuid) {
+                const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${uuid}`)
+                console.log('test', data)
+            },
             async jwtSignIn() {
                 const self = this
                 const request  = { txjson: { TransactionType: 'SignIn' }}
@@ -110,6 +114,7 @@
                         self.$store.dispatch('setUserToken', event.data.payload_uuidv4)
                         console.log('event', event)
                         console.log('UUID', event.data.payload_uuidv4)
+                        await self.test(event.data.payload_uuidv4)
                         self.components.Landing = true
                         return event.data
                     }
