@@ -330,7 +330,8 @@
             },
             async assignValidatorDaemonKey(address) {
                 console.log('validd....', address)
-                // this.validatorDaemonValid = codec.isValidAddress(address)
+                const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/is-valid-address?address=${address}`)
+                //if (data !== undefined && 'decoded' in data && !('error' in data)) {
 
                 // const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 // const Payload = {
