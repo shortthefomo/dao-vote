@@ -1,6 +1,6 @@
 <template>
     <main class="container">
-        <Landing v-if="components.Landing" :client="client" :Sdk="Sdk" :nodetype="nodetype">{NFT Flush}</Landing>
+        <Landing v-if="components.Landing" :client="client" :Sdk="Sdk" :nodetype="nodetype">{DAO VOTE}</Landing>
     </main>
 
     <!-- <footer class="container footer mb-2 mt-auto">
@@ -14,9 +14,7 @@
 <script>
     import Refs from './components/Refs.vue'
     import Landing from './components/Landing.vue'
-    import { XrplClient } from 'xrpl-client'
     import { XummSdkJwt } from 'xumm-sdk'
-    import { Buffer } from 'buffer'
     const xapp = window.xAppSdk
     
     export default {
@@ -110,8 +108,7 @@
                         console.log('Woohoo! The sign request was signed :)')
                         self.signedIn = true
                         self.$store.dispatch('setUserToken', event.data.payload_uuidv4)
-                        console.log('UUID', event.data.payload_uuidv4)
-                        console.log('data', event.data)
+                        // console.log('UUID', event.data.payload_uuidv4)
                         return event.data
                     }
 

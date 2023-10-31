@@ -113,6 +113,10 @@
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
             await this.fetchAccountInfo()
+
+            console.log('DEBUUUGGG')
+            console.log('UUID', this.$store.getters.getUserToken)
+            console.log('Account', this.$store.getters.getAccount)
         },
         computed: {
             ledger() {
