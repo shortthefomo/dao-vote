@@ -212,7 +212,6 @@
                 const payload = {
                     TransactionType: 'AccountSet',
                     Account: this.$store.getters.getAccount,
-                    // MessageKey: this.decoded_keys[this.validatorKey],
                     Memos
                 }
 
