@@ -123,7 +123,7 @@
                     Account: this.$store.getters.getAccount,
                     UUID: this.$store.getters.getUserToken
                 }
-                const {data} = await axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${this.graph.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${this.graph.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 console.log('Registered new user', data)
             }
             
