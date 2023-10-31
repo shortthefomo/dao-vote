@@ -192,8 +192,7 @@
                 
                 const payload = {
                     TransactionType: 'AccountSet',
-                    Account: this.$store.getters.getAccount,
-                    // MessageKey: this.decoded_keys[this.validatorKey],
+                    Account: this.daemonKey,
                     Memos
                 }
 
@@ -215,7 +214,7 @@
                     
                 const payload = {
                     TransactionType: 'AccountSet',
-                    Account: this.$store.getters.getAccount,
+                    Account: this.daemonKey,
                     Memos
                 }
 
@@ -231,8 +230,15 @@
                 }
 
                 if (this.signerList) {
+                    const accounts = []
+                    for (let index = 0; index < this.signers.length; index++) {
+                        const entry = this.signers[index].SignerEntry
+                        console.log('entry', entry)
+                        accounts.push(entry.Account)
+                    }
                     XummPayload.options = {
-                        submit: false
+                        submit: false,
+                        signers: accounts
                     }
                 }
                 console.log('Xumm Payload', XummPayload)
@@ -246,6 +252,9 @@
                             const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${event.data.payload_uuidv4}`)
                             console.log('Fetched Xumm Sign Payload')
                             console.log('data', data)
+
+                            //self.postMultisig(data.response.txid, data.response.hex)
+                            
                         }
                         return event.data
                     }
@@ -264,6 +273,17 @@
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
                     })
                     .catch(e => console.log('Error:', e.message))
+            },
+            async postMultisig(txid, hex) {
+                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                const Payload = {
+                    Account: this.$store.getters.getAccount,
+                    Daemon: this.daemonKey,
+                    txID: txid,
+                    Signature: hex
+                }
+                const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/signed?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+
             },
             async unLinkAccount() {
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
