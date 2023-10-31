@@ -34,8 +34,7 @@
                     SignerQuorum: {{ $store.getters.getSignerList(0).SignerQuorum }}
                 </p>
                 <p v-for="signer in signers">
-                    Signer: {{ signer.SignerEntry.Account.substring(0, 8) }}...
-                    Registered: {{ signer.SignerEntry.Registered }}
+                    Signer: {{ signer.SignerEntry.Account.substring(0, 8) }}... <i :class="(signer.SignerEntry.Registered) ? 'bg-green bi bi-check-square-fill':'bg-pink bi bi-dash-square-dotted'"></i></span>
                     SignerWeight: {{ signer.SignerEntry.SignerWeight }}
                 </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
@@ -495,7 +494,6 @@
                 if (list.SignerEntries !== undefined) { 
                     this.signers = list.SignerEntries
 
-                    console.log('DEBUUUGGG 22222')
                     // console.log('Account', this.$store.getters.getAccount)
                     const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                     const accounts = []
@@ -507,9 +505,9 @@
                     const Payload = {
                         Accounts: accounts
                     }
-                    console.log('Payload', Payload)
+                    // console.log('Payload', Payload)
                     const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                    console.log('isregistered', data)
+                    // console.log('isregistered', data)
                     //Registered
                     for (let index = 0; index < data.length; index++) {
                         const element = data[index]
@@ -519,9 +517,7 @@
                             }
                         }
                     }
-
                 }
-                
 
                 this.isLoading = false
             },
