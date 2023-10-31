@@ -120,6 +120,19 @@
 
             
             console.log('Account', this.$store.getters.getAccount)
+
+            if (this.$store.getters.getUserToken !== '' && this.$store.getters.getAccount !== '') {
+                console.log('UUID', this.$store.getters.getUserToken)
+                console.log('Account', this.$store.getters.getAccount)
+                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                const Payload = {
+                    Account: this.$store.getters.getAccount,
+                    UUID: this.$store.getters.getUserToken
+                }
+                await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                console.log('Registered new user', this.$store.getters.getAccount)
+            }
+
             const headers = { 'Content-Type': 'application/json; charset=utf-8' }
             const Payload = {
                 Accounts: [this.$store.getters.getAccount]
@@ -132,19 +145,6 @@
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
             await this.fetchAccountInfo()
-
-            console.log('DEBUUUGGG')
-            if (this.$store.getters.getUserToken !== '' && this.$store.getters.getAccount !== '') {
-                console.log('UUID', this.$store.getters.getUserToken)
-                console.log('Account', this.$store.getters.getAccount)
-                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                const Payload = {
-                    Account: this.$store.getters.getAccount,
-                    UUID: this.$store.getters.getUserToken
-                }
-                const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                console.log('Registered new user', data)
-            }
         },
         computed: {
             ledger() {
