@@ -150,7 +150,7 @@
             }
             console.log('validatorKey', this.validatorKey)
             console.log('daemonKey', this.daemonKey)
-            
+
             this.$store.dispatch('clientConnect', false)
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
@@ -532,8 +532,9 @@
                     if (data !== undefined && 'encoded' in data && !('error' in data)) {
                         console.log('keys', data.encoded, res.account_data.MessageKey)
                         this.decoded_keys[data.encoded] = data.encoded
-                        this.validatorKeyValid = true
-                        this.validatorKey = data.encoded
+                        console.log('ValidatorKey as set on MessageKey', data.encoded)
+                        // this.validatorKeyValid = true
+                        // this.validatorKey = data.encoded
                         await this.waitForOpenConnection(this.socket)
                         this.socket.send(JSON.stringify({
                             op: 'subscribe',
