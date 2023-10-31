@@ -1,5 +1,5 @@
 <template>
-    <div class="p-5 mb-4 bg-light rounded-3">
+    <div class="p-3 mb-3 bg-light rounded-3">
         <div class="container-fluid py-5">
             <img class="bog-roll" src="/e.png">
             <div class="col-md-8 fs-4">                
