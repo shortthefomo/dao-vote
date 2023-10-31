@@ -92,7 +92,6 @@
 </template>
 
 <script>
-    import codec from 'ripple-address-codec'
     import { flagNames } from 'flagnames'
     import { Buffer } from 'buffer'
     const xapp = window.xAppSdk
@@ -330,8 +329,8 @@
                 }
             },
             async assignValidatorDaemonKey(address) {
-                console.log('validd....', codec.isValidAddress(address))
-                this.validatorDaemonValid = codec.isValidAddress(address)
+                console.log('validd....', address)
+                // this.validatorDaemonValid = codec.isValidAddress(address)
 
                 // const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 // const Payload = {
