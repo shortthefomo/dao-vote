@@ -102,7 +102,6 @@
         data() {
             return {
                 isLoading: true,
-                isMultisigSigner: false,
                 selectedVote: [],
                 socket: null,
                 registerKey: '',
@@ -131,7 +130,7 @@
             
             console.log('Account', this.$store.getters.getAccount)
 
-            if (this.$store.getters.getUserToken !== '' && this.$store.getters.getAccount !== '') {
+            if (this.$store.getters.getUserToken !== '') {
                 console.log('UUID', this.$store.getters.getUserToken)
                 console.log('Account', this.$store.getters.getAccount)
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
@@ -142,15 +141,11 @@
                 await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 console.log('Registered new user', this.$store.getters.getAccount)
             }
-
-            const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-            const Payload = {
-                Accounts: [this.$store.getters.getAccount]
-            }
-            const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-            this.isMultisigSigner = data[0].Registered
-            console.log('isMultisigSigner', data[0].Registered)
             
+            const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/account?Account=${this.$store.getters.getAccount}`)
+            console.log('DDDDD', data)
+
+
             this.$store.dispatch('clientConnect', false)
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
@@ -314,7 +309,16 @@
             },
             async assignValidator(key, address) {
                 await this.assignValidatorKey(key)
-                await this.assignValidatorDaemonKey(key)
+                await this.assignValidatorDaemonKey(address)
+
+                if (!(this.validatorKeyValid && this.validatorDaemonValid)) { return }
+                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                const Payload = {
+                    Daemon: address,
+                    Account: this.$store.getters.getAccount,
+                    Validator: key
+                }
+                await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
             },
             async assignValidatorKey(key) {
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public?key=${key}`)
@@ -334,6 +338,7 @@
                 if (data !== undefined && 'isValidAddress' in data && !('error' in data)) {
                     this.validatorDaemonValid = data.isValidAddress
                 }
+
                 // const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 // const Payload = {
                 //     Daemon: key
