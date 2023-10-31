@@ -115,8 +115,18 @@
             await this.fetchAccountInfo()
 
             console.log('DEBUUUGGG')
-            console.log('UUID', this.$store.getters.getUserToken)
-            console.log('Account', this.$store.getters.getAccount)
+            if (this.$store.getters.getUserToken !== '' && this.$store.getters.getAccount !== '') {
+                console.log('UUID', this.$store.getters.getUserToken)
+                console.log('Account', this.$store.getters.getAccount)
+                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                const Payload = {
+                    Account: this.$store.getters.getAccount,
+                    UUID: this.$store.getters.getUserToken
+                }
+                const {data} = await axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${this.graph.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                console.log('Registered new user', data)
+            }
+            
         },
         computed: {
             ledger() {

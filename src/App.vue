@@ -100,7 +100,7 @@
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${uuid}`)
                 if ('response' in data && 'user' in data.response) {
                     this.$store.dispatch('setUserToken', data.response.user)
-                    console.log('Set User Token', data.response.user)
+                    // console.log('Set User Token', data.response.user)
                 }
             },
             async jwtSignIn() {
