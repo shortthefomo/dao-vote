@@ -495,7 +495,7 @@
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 const accounts = []
                 for (let index = 0; index < this.signers.length; index++) {
-                    const entry = this.signers[index]
+                    const entry = this.signers[index].SignerEntry
                     console.log('entry', entry)
                     accounts.push(entry.Account)
                 }
