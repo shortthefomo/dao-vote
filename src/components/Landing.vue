@@ -322,6 +322,9 @@
                 await this.assignValidatorKey(key)
                 await this.assignValidatorDaemonKey(address)
 
+                this.checkAccountData()
+                this.signerList = await this.fetchSignerList()
+
                 if (!(this.validatorKeyValid && this.validatorDaemonValid)) { return }
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 const Payload = {
@@ -551,39 +554,12 @@
                 console.log('regularKey', this.regularKey)
                 console.log('signerList', this.signerList)
                 console.log('SingerList', this.$store.getters.getSignerList(0))
-                const list = this.$store.getters.getSignerList(0)
-                if (list.SignerEntries !== undefined) { 
-                    this.signers = list.SignerEntries
-
-                    // console.log('Account', this.$store.getters.getAccount)
-                    const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                    const accounts = []
-                    for (let index = 0; index < this.signers.length; index++) {
-                        const entry = this.signers[index].SignerEntry
-                        console.log('entry', entry)
-                        accounts.push(entry.Account)
-                    }
-                    const Payload = {
-                        Accounts: accounts
-                    }
-                    // console.log('Payload', Payload)
-                    const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                    // console.log('isregistered', data)
-                    //Registered
-                    for (let index = 0; index < data.length; index++) {
-                        const element = data[index]
-                        for (let item = 0; item < this.signers.length; item++) {
-                            if (this.signers[item].SignerEntry.Account === element.Account) {
-                                this.signers[item].SignerEntry.Registered = element.Registered
-                            }
-                        }
-                    }
-                }
+                
 
                 this.isLoading = false
             },
             checkAccountData() {
-                const account_data = this.$store.getters.getAccountData
+                const account_data = this.daemonKey
                 console.log('getAccountData', account_data)
                 const flags = flagNames(account_data.LedgerEntryType, account_data.Flags)
                 console.log('flags', flags)
@@ -643,6 +619,35 @@
                         const element = signer_lists[index]
                         console.log('signer_list', element)    
                         console.log('flags', flagNames(element.LedgerEntryType, element.Flags))
+                    }
+                }
+
+                const list = this.$store.getters.getSignerList(0)
+                if (list.SignerEntries !== undefined) { 
+                    this.signers = list.SignerEntries
+
+                    // console.log('Account', this.$store.getters.getAccount)
+                    const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                    const accounts = []
+                    for (let index = 0; index < this.signers.length; index++) {
+                        const entry = this.signers[index].SignerEntry
+                        console.log('entry', entry)
+                        accounts.push(entry.Account)
+                    }
+                    const Payload = {
+                        Accounts: accounts
+                    }
+                    // console.log('Payload', Payload)
+                    const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                    // console.log('isregistered', data)
+                    //Registered
+                    for (let index = 0; index < data.length; index++) {
+                        const element = data[index]
+                        for (let item = 0; item < this.signers.length; item++) {
+                            if (this.signers[item].SignerEntry.Account === element.Account) {
+                                this.signers[item].SignerEntry.Registered = element.Registered
+                            }
+                        }
                     }
                 }
 
