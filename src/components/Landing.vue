@@ -32,7 +32,8 @@
                 </p>
 
                 <p v-for="signer in signers">
-                    Signer: 
+                    Signer: {{ signer.Account }}
+                    Registered: {{ signer.Registered }}
                 </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
@@ -505,6 +506,15 @@
                 console.log('Payload', Payload)
                 const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 console.log('isregistered', data)
+                //Registered
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index]
+                    for (let item = 0; item < this.signers.length; item++) {
+                        if (this.signers[item].SignerEntry.Account === data.Account) {
+                            this.signers[item].SignerEntry.Registered = data.Registered
+                        }
+                    }
+                }
 
                 this.isLoading = false
             },
