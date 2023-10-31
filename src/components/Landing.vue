@@ -30,6 +30,10 @@
                 <p v-if="validator_data !== null" class="text">
                     Last seen: {{ secondsToString((Date.now() - validator_data.last_seen) / 1000).toString() }}
                 </p>
+
+                <p v-for="signer in signers">
+                    Signer: 
+                </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
         </div>
@@ -95,6 +99,7 @@
                 validator_data: null,
                 validator_key_valid: true,
                 votes: [],
+                signers: [],
                 decoded_keys: [],
                 client: null,
                 masterKey: true,
@@ -125,17 +130,6 @@
                 }
                 const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 console.log('Registered new user', data)
-            }
-
-            console.log('DEBUUUGGG 22222')
-            if (this.$store.getters.getAccount !== '') {
-                console.log('Account', this.$store.getters.getAccount)
-                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                const Payload = {
-                    Accounts: [this.$store.getters.getAccount]
-                }
-                const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                console.log('isregistered', data)
             }
         },
         computed: {
@@ -492,12 +486,24 @@
                 console.log('masterKey', this.masterKey)
                 console.log('regularKey', this.regularKey)
                 console.log('signerList', this.signerList)
-                if (this.$store.getters.getSignerLists.length > 0) {
-                    console.log('SingerLists', this.$store.getters.getSignerLists[0]) 
-                }
+                console.log('SingerList', this.$store.getters.getSignerList(0))
+                const list = this.$store.getters.getSignerList(0)
+                this.signers = list.SignerEntries
 
-                console.log('xxxxxx SingerList', this.$store.getters.getSignerList(0))
-                
+                console.log('DEBUUUGGG 22222')
+                console.log('Account', this.$store.getters.getAccount)
+                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                const accounts = []
+                for (let index = 0; index < list.SignerEntries.length; index++) {
+                    const entry = list.SignerEntries[index]
+                    accounts.push(entry.Account)
+                }
+                const Payload = {
+                    Accounts: accounts
+                }
+                const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                console.log('isregistered', data)
+
                 this.isLoading = false
             },
             checkAccountData() {
