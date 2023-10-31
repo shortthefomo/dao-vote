@@ -142,7 +142,7 @@
                 console.log('Registered new user', this.$store.getters.getAccount)
             }
             
-            const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/account?Account=${this.$store.getters.getAccount}`)
+            const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/account?appkey=${import.meta.env.VITE_XUMM_APPKEY}&Account=${this.$store.getters.getAccount}`)
             console.log('DDDDD', data)
 
 
