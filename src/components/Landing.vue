@@ -262,14 +262,6 @@
                         instruction: (key === '') ? 'Unlink validator with account' : 'Link validator with account'
                     }
                 }
-                // lock it to testnet for testing right now
-                // const tokenData = this.$store.getters.getXummTokenData
-                // if (tokenData.nodetype !== 'TESTNET') { return }
-                
-                if (signerList) {
-
-
-                }
 
                 const self = this
                 const subscription = await this.Sdk.payload.createAndSubscribe(XummPayload, async event => {
