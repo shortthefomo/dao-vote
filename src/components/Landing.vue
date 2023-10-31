@@ -30,9 +30,6 @@
                 <p v-if="validator_data !== null" class="text">
                     Last seen: {{ secondsToString((Date.now() - validator_data.last_seen) / 1000).toString() }}
                 </p>
-                <p>
-                    {{ signers  }}
-                </p>
                 <p v-for="signer in signers">
                     Signer: {{ signer.SignerEntry.Account }}
                     Registered: {{ signer.SignerEntry.Registered }}
@@ -512,8 +509,8 @@
                 for (let index = 0; index < data.length; index++) {
                     const element = data[index]
                     for (let item = 0; item < this.signers.length; item++) {
-                        if (this.signers[item].SignerEntry.Account === data.Account) {
-                            this.signers[item].SignerEntry.Registered = data.Registered
+                        if (this.signers[item].SignerEntry.Account === element.Account) {
+                            this.signers[item].SignerEntry.Registered = element.Registered
                         }
                     }
                 }
