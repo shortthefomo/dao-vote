@@ -158,6 +158,7 @@
             this.client = this.$store.getters.getClient
             await this.connectWebsocket()
             await this.fetchAccountInfo()
+            this.isLoading = false
         },
         computed: {
             ledger() {
@@ -559,9 +560,6 @@
                 console.log('regularKey', this.regularKey)
                 console.log('signerList', this.signerList)
                 console.log('SingerList', this.$store.getters.getSignerList(0))
-                
-
-                this.isLoading = false
             },
             checkAccountData() {
                 const account_data = this.$store.getters.getAccountData
