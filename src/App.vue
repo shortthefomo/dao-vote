@@ -42,7 +42,7 @@
 
             // if (this.components.Landing) { return }
             
-            this.components.Landing = true
+            // this.components.Landing = true
             // if (this.$store.getters.getAccount == 'rNbDBfxEpSV2G9Y8Qbvsn4mEZ98DafkpxK') {
             //     this.components.Landing = false
             // }
@@ -109,6 +109,7 @@
                         self.signedIn = true
                         self.$store.dispatch('setUserToken', event.data.payload_uuidv4)
                         // console.log('UUID', event.data.payload_uuidv4)
+                        self.components.Landing = true
                         return event.data
                     }
 
