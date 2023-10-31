@@ -242,6 +242,11 @@
 
                     if (event.data.signed === true) {
                         console.log('Woohoo! The sign request was signed :)')
+                        if (self.signerList) {
+                            const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${event.data.payload_uuidv4}`)
+                            console.log('Fetched Xumm Sign Payload')
+                            console.log('data', data)
+                        }
                         return event.data
                     }
 
@@ -252,6 +257,7 @@
                 })
                 console.log('subscription', subscription)
 
+                
                 xapp.openSignRequest({ uuid: subscription.created.uuid })
                     .then(d => {
                         // d (returned value) can be Error or return data:
