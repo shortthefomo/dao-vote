@@ -30,9 +30,13 @@
                 <p v-if="validator_data !== null" class="text">
                     Last seen: {{ secondsToString((Date.now() - validator_data.last_seen) / 1000).toString() }}
                 </p>
+                <p v-if="signers.length > 0">
+                    SignerQuorum: {{ $store.getters.getSignerList(0).SignerQuorum }}
+                </p>
                 <p v-for="signer in signers">
                     Signer: {{ signer.SignerEntry.Account }}
                     Registered: {{ signer.SignerEntry.Registered }}
+                    SignerWeight: {{ signer.SignerEntry.SignerWeight }}
                 </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
