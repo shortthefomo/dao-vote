@@ -141,7 +141,7 @@
                     Accounts: [this.$store.getters.getAccount]
                 }
                 const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                console.log('Is Registered new user', data)
+                console.log('Is Registered new user', data[0].Registered)
             }
         },
         computed: {
