@@ -110,7 +110,8 @@
                         console.log('Woohoo! The sign request was signed :)')
                         self.signedIn = true
                         self.$store.dispatch('setUserToken', event.data.payload_uuidv4)
-                        // await self.getStoreage()
+                        console.log('UUID', event.data.payload_uuidv4)
+                        console.log('data', event.data)
                         return event.data
                     }
 
