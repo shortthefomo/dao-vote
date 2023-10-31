@@ -277,7 +277,7 @@
 
                 await this.waitForOpenConnection(this.socket)
                 console.log('sending', {channel: this.$store.getters.getAccount, topic: 'decode-node-public', action: 'set-validator-key', key})
-                const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/v1/apps/decode-node-public`)
+                const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/decode-node-public`)
                 console.log('assignValidatorKey', data)
                 
                 this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
@@ -489,11 +489,24 @@
                 if ('MessageKey' in res.account_data) {
                     await this.waitForOpenConnection(this.socket)
                     this.set_key = true
-                    console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'listen-validator', key: res.account_data.MessageKey})
-                    this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'listen-validator', key: res.account_data.MessageKey}))
+                    // console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'listen-validator', key: res.account_data.MessageKey})
+                    // this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'listen-validator', key: res.account_data.MessageKey}))
 
-                    const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`)
-                    console.log('MessageKeyMessageKeyMessageKey',data)
+                    const { data } = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`)
+                    
+                    console.log('encode-node-public ...', data)
+                    this.decoded_keys[res.account_data.MessageKey] = data.encoded
+                    console.log('res.account_data.MessageKey', res.account_data.MessageKey)
+                    if (data !== undefined && 'encoded' in data) {
+                        this.validator_key_valid = true
+                        this.validator_key = data.encoded
+                        this.socket.send(JSON.stringify({
+                            op: 'subscribe',
+                            channel: data[account].key
+                        }))
+                        console.log('subscribed to socket', data[account].key)
+                    }
+                    
                 }
                 
                 this.$store.dispatch('setAccountData', res.account_data)
