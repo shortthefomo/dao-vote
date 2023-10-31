@@ -263,6 +263,8 @@
                     Account: this.$store.getters.getAccount
                 }
                 await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/unregister?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                this.socket.close()
+                this.validatorData = null
                 this.validatorKey = ''
                 this.daemonKey = ''
                 this.validatorKeyValid = true
