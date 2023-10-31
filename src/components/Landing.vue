@@ -287,16 +287,12 @@
                                 
                     if (data[account].action === 'set-validator-key') {
                         this.submitMessageKey(data.decoded, key)
-                        console.log('subscribed to socket', key)
                         this.validator_key_valid = true
                     }
                 }
                 else {
                     this.validator_key_valid = false
                 }
-            },
-            setValidator(key) {
-                // return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
             },
             highlights(amendment) {
                 if (this.selected_vote.includes(amendment.hash)) {
