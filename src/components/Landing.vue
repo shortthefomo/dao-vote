@@ -495,9 +495,9 @@
                     const { data } = this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`)
                     
                     console.log('encode-node-public ...', data)
-                    this.decoded_keys[res.account_data.MessageKey] = data.encoded
                     console.log('res.account_data.MessageKey', res.account_data.MessageKey)
                     if (data !== undefined && 'encoded' in data) {
+                        this.decoded_keys[data.encoded] = data.encoded
                         this.validator_key_valid = true
                         this.validator_key = data.encoded
                         this.socket.send(JSON.stringify({
