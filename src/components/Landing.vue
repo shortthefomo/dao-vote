@@ -144,7 +144,10 @@
             
             const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/account?appkey=${import.meta.env.VITE_XUMM_APPKEY}&Account=${this.$store.getters.getAccount}`)
             console.log('DDDDD', data)
-
+            if ('Daemon' in data && 'Validator' in data) {
+                this.validatorKey = data.Validator
+                this.daemonKey = data.Daemon
+            }
 
             this.$store.dispatch('clientConnect', false)
             this.client = this.$store.getters.getClient
