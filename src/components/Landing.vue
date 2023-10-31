@@ -97,7 +97,6 @@
                 votes: [],
                 decoded_keys: [],
                 client: null,
-                set_key: false,
                 masterKey: true,
                 regularKey: false,
                 signerList: false
@@ -357,41 +356,7 @@
 
                     const data  = JSON.parse(message.data)
                     // console.log('data', data)
-                    const account = self.$store.getters.getAccount
-                    // if (data[account] !== undefined) {
-                    //     if ('topic' in data[account]) {
-                    //         if (data[account].topic === 'decode-node-public') {
-                    //             console.log('decode-node-public ...', data)
-                                
-                    //             if (data[account].action === 'set-validator-key') {
-                    //                 self.submitMessageKey(data[account].key, data[account].initial)
-                    //                 console.log('subscribed to socket', data[account].initial)
-                    //             }
-                    //             if ('error' in data[account] && self.validator_data === null) {
-                    //                 self.validator_key_valid = false
-                    //                 console.log('validator_key_valid setting input to error state')
-                    //             }
-                    //             else {
-                    //                 self.validator_key_valid = true
-                    //             }
-                    //         }
-                    //         if (data[account].topic === 'encode-node-public') {
-                    //             console.log('encode-node-public ...', data)
-                    //             self.decoded_keys[data[account].key] = data[account].key
-                    //             if (data[account].action === 'listen-validator') {
-                    //                 self.validator_key_valid = true
-                    //                 self.validator_key = data[account].key
-                    //                 self.socket.send(JSON.stringify({
-                    //                     op: 'subscribe',
-                    //                     channel: data[account].key
-                    //                 }))
-                    //                 console.log('subscribed to socket', data[account].key)
-                    //             }
-                    //         }
-                    //         return
-                    //     }
-                    // }
-                    const validator = self.validator_key //self.$store.getters.getAccount
+                    const validator = self.validator_key
                     if (data[validator] !== undefined) {
                         self.validator_data = data[validator]
                         // console.log(self.validator_data)
@@ -493,20 +458,14 @@
                 console.log(res)
 
                 if ('MessageKey' in res.account_data) {
-                    await this.waitForOpenConnection(this.socket)
-                    this.set_key = true
-                    // console.log('sending', {channel: this.$store.getters.getAccount, topic: 'encode-node-public', action: 'listen-validator', key: res.account_data.MessageKey})
-                    // this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'encode-node-public',  action: 'listen-validator', key: res.account_data.MessageKey}))
-
                     const { data } = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/encode-node-public?key=${res.account_data.MessageKey}`)
-                    
-                    console.log('encode-node-public ...', data)
                     
                     if (data !== undefined && 'encoded' in data && !('error' in data)) {
                         console.log('keys', data.encoded, res.account_data.MessageKey)
                         this.decoded_keys[data.encoded] = data.encoded
                         this.validator_key_valid = true
                         this.validator_key = data.encoded
+                        await this.waitForOpenConnection(this.socket)
                         this.socket.send(JSON.stringify({
                             op: 'subscribe',
                             channel: data.encoded
