@@ -322,8 +322,10 @@
                 await this.assignValidatorKey(key)
                 await this.assignValidatorDaemonKey(address)
 
-                this.checkAccountData()
-                this.signerList = await this.fetchSignerList()
+                
+                if (this.daemonKey !== '') {
+                    this.fetchAccountInfo()
+                }
 
                 if (!(this.validatorKeyValid && this.validatorDaemonValid)) { return }
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
@@ -513,13 +515,13 @@
 				return bytes
 			},
             async fetchAccountInfo() {
-                console.log('fetching accountInfo: ' + this.$store.getters.getAccount)
+                console.log('fetching accountInfo: ' + this.daemonKey)
                 console.log('this.client', this.client)
 
                 const payload = {
                     'id': 3,
                     'command': 'account_info',
-                    'account': this.$store.getters.getAccount,
+                    'account': this.daemonKey,
                     'ledger_index': 'current'
                 }
                 console.log(payload)
