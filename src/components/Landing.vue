@@ -36,7 +36,7 @@
                 <p v-for="signer in signers">
                     <i :class="(signer.SignerEntry.Registered) ? 'bi bi-check-square-fill':'bi bi-dash-square-dotted'"></i> <i :class="`bi bi-${signer.SignerEntry.SignerWeight}-square${(signer.SignerEntry.Registered) ? '-fill':''}`"></i> {{ signer.SignerEntry.Account.substring(0, 8) }}...
                 </p>
-                <button v-if="validatorKey !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
+                <button v-if="validatorKey !== ''" type="button" class="btn btn-secondary" @click="unLinkAccount()">Unlink</button>
             </div>
         </div>
     </div>
@@ -252,17 +252,17 @@
                     })
                     .catch(e => console.log('Error:', e.message))
             },
+            async unLinkAccount() {
+                const headers = { 'Content-Type': 'application/json; charset=utf-8' }
+                const Payload = {
+                    Account: this.$store.getters.getAccount
+                }
+                await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/unregister?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+            },
             async submitMessageKey(key, initial = '') {
                 if (this.daemonKey === '') { 
                     console.error('daemonKey not set')
                     return 
-                }
-                if (key === '') {
-                    const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                    const Payload = {
-                        Account: this.$store.getters.getAccount
-                    }
-                    await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/unregister?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 }
                 const payload = {
                     TransactionType: 'AccountSet',
