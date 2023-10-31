@@ -34,8 +34,7 @@
                     SignerQuorum: {{ $store.getters.getSignerList(0).SignerQuorum }}
                 </p>
                 <p v-for="signer in signers">
-                    <i :class="(signer.SignerEntry.Registered) ? 'bi bi-check-square-fill':'bi bi-dash-square-dotted'"></i> Signer: {{ signer.SignerEntry.Account.substring(0, 8) }}...
-                    SignerWeight: {{ signer.SignerEntry.SignerWeight }}
+                    <i :class="(signer.SignerEntry.Registered) ? 'bi bi-check-square-fill':'bi bi-dash-square-dotted'"></i> <i :class="'bi bi-${signer.SignerEntry.SignerWeight}-square-fill'"></i> Signer: {{ signer.SignerEntry.Account.substring(0, 8) }}...
                 </p>
                 <button v-if="validator_key !== ''" type="button" class="btn btn-secondary" @click="submitMessageKey('')">Unlink</button>
             </div>
