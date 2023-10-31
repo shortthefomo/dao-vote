@@ -491,7 +491,7 @@
                 this.signers = list.SignerEntries
 
                 console.log('DEBUUUGGG 22222')
-                console.log('Account', this.$store.getters.getAccount)
+                // console.log('Account', this.$store.getters.getAccount)
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 const accounts = []
                 for (let index = 0; index < list.SignerEntries.length; index++) {
@@ -501,6 +501,7 @@
                 const Payload = {
                     Accounts: accounts
                 }
+                console.log('Payload', Payload)
                 const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                 console.log('isregistered', data)
 
