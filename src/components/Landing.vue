@@ -73,7 +73,7 @@
             Please enter a valid validator public key.
         </div>
     </div>
-    <div v-else-if="daemonKey === '' && isLoading === false" class="mb-5">
+    <div v-if="daemonKey === '' && isLoading === false" class="mb-5">
         <h1 class="display-5 fw-bold">Set Validator rAddress</h1>
         <input id="validator_daemon" v-model="daemonKey" placeholder="Validator public key" :class="validatorDaemonValid? 'mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded':'is-invalid mb-2 me-2 w-full py-2 form-control border border-indigo-500 rounded'" aria-describedby="validatorDaemonKey" required/>
         <button v-if="registerKey !== ''" type="button" class="btn btn-primary" @click="assignValidatorDaemonKey(daemonKey)">Link</button>
