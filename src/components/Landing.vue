@@ -494,8 +494,9 @@
                 // console.log('Account', this.$store.getters.getAccount)
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                 const accounts = []
-                for (let index = 0; index < list.SignerEntries.length; index++) {
-                    const entry = list.SignerEntries[index]
+                for (let index = 0; index < this.signers.length; index++) {
+                    const entry = this.signers[index]
+                    console.log('entry', entry)
                     accounts.push(entry.Account)
                 }
                 const Payload = {
