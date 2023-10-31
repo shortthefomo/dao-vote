@@ -277,6 +277,9 @@
 
                 await this.waitForOpenConnection(this.socket)
                 console.log('sending', {channel: this.$store.getters.getAccount, topic: 'decode-node-public', action: 'set-validator-key', key})
+                const {data} = this.axios.get(`https://vote-backend.panicbot.xyz/v1/apps/decode-node-public`)
+                console.log('assignValidatorKey', data)
+                
                 this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
             },
             setValidator(key) {
