@@ -1,10 +1,6 @@
 <template>
-    <header class="container">
+    <main class="container">
         <Landing v-if="components.Landing" :client="client" :Sdk="Sdk" :nodetype="nodetype">{NFT Flush}</Landing>
-    </header>
-
-    <main>
-        <Viewer v-if="components.Viewer" :client="client" :Sdk="Sdk" :nodetype="nodetype">{NFT Flush}</Viewer>
     </main>
 
     <!-- <footer class="container footer mb-2 mt-auto">
@@ -18,7 +14,6 @@
 <script>
     import Refs from './components/Refs.vue'
     import Landing from './components/Landing.vue'
-    import Viewer from './components/Viewer.vue'
     import { XrplClient } from 'xrpl-client'
     import { XummSdkJwt } from 'xumm-sdk'
     import { Buffer } from 'buffer'
@@ -27,7 +22,6 @@
     export default {
         components: {
             Landing,
-            Viewer,
             Refs
         },
         data() {
@@ -39,7 +33,6 @@
                 ready: false,
                 components: {
                     Landing: false,
-                    Viewer: false
                 },
                 client: null,
                 signedIn: false
@@ -54,7 +47,6 @@
             this.components.Landing = true
             // if (this.$store.getters.getAccount == 'rNbDBfxEpSV2G9Y8Qbvsn4mEZ98DafkpxK') {
             //     this.components.Landing = false
-            //     this.components.Viewer = true
             // }
             
         },
