@@ -282,7 +282,7 @@
                 
                 // this.socket.send(JSON.stringify({channel: this.$store.getters.getAccount, topic: 'decode-node-public',  action: 'set-validator-key', key}))
 
-                if (data !== undefined && 'decoded' in data) {
+                if (data !== undefined && 'decoded' in data && !('error' in data)) {
                     console.log('keys', data.decoded, key)
                                 
                     if (data[account].action === 'set-validator-key') {
@@ -509,7 +509,7 @@
                     
                     console.log('encode-node-public ...', data)
                     
-                    if (data !== undefined && 'encoded' in data) {
+                    if (data !== undefined && 'encoded' in data && !('error' in data)) {
                         console.log('keys', data.encoded, res.account_data.MessageKey)
                         this.decoded_keys[data.encoded] = data.encoded
                         this.validator_key_valid = true
