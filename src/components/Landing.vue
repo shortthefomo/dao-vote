@@ -228,7 +228,7 @@
                         instruction: 'Send vote to validator deamon.'
                     }
                 }
-
+                console.log('signerListsignerList', signerList)
                 if (this.signerList) {
                     const accounts = []
                     for (let index = 0; index < this.signers.length; index++) {
