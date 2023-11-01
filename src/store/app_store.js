@@ -116,6 +116,9 @@ export const AppStore = {
         getAccountData: (state) => {
             return state.account_data
         },
+        getClientServers: state => {
+            return state.servers
+        },
         getSignerLists: (state) => {
             return state.signer_lists
         },
