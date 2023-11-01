@@ -242,38 +242,48 @@
                         multisign: true
                     }
                 }
-                console.log('Xumm Payload', XummPayload)
-                const self = this
-                const subscription = await this.Sdk.payload.createAndSubscribe(payload, async event => {
-                    console.log('New payload event:', event.data)
+                for (let index = 0; index < this.signers.length; index++) {
+                    if ('UUID' in this.signers[index].SignerEntry) {
+                        console.log('Xumm Payload', XummPayload)
+                        
+                        XummPayload.user_token = this.signers[index].SignerEntry.UUID
+                        const result = await this.Sdk.payload.create(XummPayload)
+                        console.log('result result result', result)
+                    }
+                }
+                
 
-                    if (event.data.signed === true) {
-                        console.log('Woohoo! The sign request was signed :)')
-                        if (self.signerList) {
-                            const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${event.data.payload_uuidv4}`)
-                            console.log('Fetched Xumm Sign Payload')
-                            console.log('data', data)
+                // const self = this
+                // const subscription = await this.Sdk.payload.createAndSubscribe(payload, async event => {
+                //     console.log('New payload event:', event.data)
 
-                            //self.postMultisig(data.response.txid, data.response.hex)
+                //     if (event.data.signed === true) {
+                //         console.log('Woohoo! The sign request was signed :)')
+                //         if (self.signerList) {
+                //             const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${event.data.payload_uuidv4}`)
+                //             console.log('Fetched Xumm Sign Payload')
+                //             console.log('data', data)
+
+                //             //self.postMultisig(data.response.txid, data.response.hex)
                             
-                        }
-                        return event.data
-                    }
+                //         }
+                //         return event.data
+                //     }
 
-                    if (event.data.signed === false) {
-                        console.log('The sign request was rejected :(')
-                        return false
-                    }
-                })
-                console.log('subscription', subscription)
+                //     if (event.data.signed === false) {
+                //         console.log('The sign request was rejected :(')
+                //         return false
+                //     }
+                // })
+                // console.log('subscription', subscription)
 
                 
-                xapp.openSignRequest({ uuid: subscription.created.uuid })
-                    .then(d => {
-                        // d (returned value) can be Error or return data:
-                        console.log('openSignRequest response:', d instanceof Error ? d.message : d)
-                    })
-                    .catch(e => console.log('Error:', e.message))
+                // xapp.openSignRequest({ uuid: subscription.created.uuid })
+                //     .then(d => {
+                //         // d (returned value) can be Error or return data:
+                //         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
+                //     })
+                //     .catch(e => console.log('Error:', e.message))
             },
             async postMultisig(txid, hex) {
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
