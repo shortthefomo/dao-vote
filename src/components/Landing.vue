@@ -241,36 +241,36 @@
                         instruction: 'Send vote to validator deamon.'
                     }
                 }
-                console.log('signerList', this.signerList)
+                // console.log('signerList', this.signerList)
 
                 
 
-                if (this.signerList) {
-                    const accounts = []
-                    for (let index = 0; index < this.signers.length; index++) {
-                        const entry = this.signers[index].SignerEntry
-                        console.log('entry', entry)
-                        accounts.push(entry.Account)
-                    }
-                    XummPayload.options = {
-                        submit: false,
-                        signers: accounts,
-                        multisign: true
-                    }
-                }
-                for (let index = 0; index < this.signers.length; index++) {
-                    if ('UUID' in this.signers[index].SignerEntry) {
-                        XummPayload.user_token = this.signers[index].SignerEntry.UUID
-                        XummPayload.custom_meta.instruction = 'Sign Vote with account: ' + this.signers[index].SignerEntry.Account
-                        console.log('Xumm Payload', XummPayload)
-                        const result = await this.Sdk.payload.create(XummPayload)
-                        console.log('result result result', result)
-                        const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${result.uuid}`)
-                        console.log('Fetched Xumm Payload Result')
-                        console.log('data', data)
+                // if (this.signerList) {
+                //     const accounts = []
+                //     for (let index = 0; index < this.signers.length; index++) {
+                //         const entry = this.signers[index].SignerEntry
+                //         console.log('entry', entry)
+                //         accounts.push(entry.Account)
+                //     }
+                //     XummPayload.options = {
+                //         submit: false,
+                //         signers: accounts,
+                //         multisign: true
+                //     }
+                // }
+                // for (let index = 0; index < this.signers.length; index++) {
+                //     if ('UUID' in this.signers[index].SignerEntry) {
+                //         XummPayload.user_token = this.signers[index].SignerEntry.UUID
+                //         XummPayload.custom_meta.instruction = 'Sign Vote with account: ' + this.signers[index].SignerEntry.Account
+                //         console.log('Xumm Payload', XummPayload)
+                //         const result = await this.Sdk.payload.create(XummPayload)
+                //         console.log('result result result', result)
+                //         const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${result.uuid}`)
+                //         console.log('Fetched Xumm Payload Result')
+                //         console.log('data', data)
                         
-                    }
-                }
+                //     }
+                // }
                 
 
                 const self = this
