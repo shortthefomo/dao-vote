@@ -241,7 +241,7 @@
                         instruction: 'Send vote to validator deamon.'
                     }
                 }
-                console.log('signerListsignerList', signerList)
+                console.log('signerList', this.signerList)
 
                 
 
