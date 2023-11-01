@@ -223,6 +223,15 @@
             },
             async submitVote(payload) {
                 if (this.$store.getters.getAccount === 'rMzF7b9QzZ2FXfHtArp1ezvoRsJkbCDmvC') {
+
+                    const result = await client.send({
+                        'command': 'server_info'
+                    })
+                    // log(result)
+                    const reference_fee = (result.info.validated_ledger.base_fee_xrp * result.info.load_factor) * 1_000_000
+                    const multisig_fee = reference_fee * (1 + this.signers.length)
+                    payload.Fee = multisig_fee.toString()
+
                     console.log('SubmitVote')
                     const headers = { 'Content-Type': 'application/json; charset=utf-8' }
                     const Payload = {
