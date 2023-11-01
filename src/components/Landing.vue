@@ -238,8 +238,8 @@
                     }
                     XummPayload.options = {
                         submit: false,
-                        signers: accounts,
-                        multisign: true
+                        signers: accounts
+                        // multisign: true
                     }
                 }
                 for (let index = 0; index < this.signers.length; index++) {
