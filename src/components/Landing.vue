@@ -286,7 +286,7 @@
 
                         //     //self.postMultisig(data.response.txid, data.response.hex)
                             
-                        }
+                        // }
                         return event.data
                     }
 
