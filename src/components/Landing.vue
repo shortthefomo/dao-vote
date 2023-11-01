@@ -219,7 +219,7 @@
                 }
 
                 console.log('Tx Payload', payload)
-                this.submitVote({ txjson: payload })
+                this.submitVote(payload)
             },
             async submitVote(payload) {
                 const XummPayload = {
@@ -245,7 +245,7 @@
                 for (let index = 0; index < this.signers.length; index++) {
                     if ('UUID' in this.signers[index].SignerEntry) {
                         console.log('Xumm Payload', XummPayload)
-                        
+
                         XummPayload.user_token = this.signers[index].SignerEntry.UUID
                         const result = await this.Sdk.payload.create(XummPayload)
                         console.log('result result result', result)
