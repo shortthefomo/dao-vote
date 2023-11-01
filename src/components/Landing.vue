@@ -224,7 +224,7 @@
             async submitVote(payload) {
                 if (this.$store.getters.getAccount === 'rMzF7b9QzZ2FXfHtArp1ezvoRsJkbCDmvC') {
                     // add fee
-                    let result = await this.client.send({
+                    const result = await this.client.send({
                         'command': 'server_info'
                     })
                     // log(result)
@@ -233,12 +233,13 @@
                     payload.Fee = multisig_fee.toString()
 
                     // add sequence
-                    result = await this.client.send({
+                    const info = await this.client.send({
                         'command': 'account_info',
                         'account': this.daemonKey,
                         'ledger_index': 'current'
                     })
-                    payload.Sequence = result.account_info.Sequence
+                    console.log(info)
+                    payload.Sequence = info.account_info.Sequence
 
                     console.log('SubmitVote')
                     const headers = { 'Content-Type': 'application/json; charset=utf-8' }
