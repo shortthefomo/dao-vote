@@ -247,6 +247,7 @@
                         console.log('Xumm Payload', XummPayload)
 
                         XummPayload.user_token = this.signers[index].SignerEntry.UUID
+                        XummPayload.custom_meta.instruction = 'Sign Vote with account: ' + this.signers[index].SignerEntry.Account
                         const result = await this.Sdk.payload.create(XummPayload)
                         console.log('result result result', result)
                     }
