@@ -250,6 +250,10 @@
                         XummPayload.custom_meta.instruction = 'Sign Vote with account: ' + this.signers[index].SignerEntry.Account
                         const result = await this.Sdk.payload.create(XummPayload)
                         console.log('result result result', result)
+                        const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${result.uuid}`)
+                        console.log('Fetched Xumm Payload Result')
+                        console.log('data', data)
+                        
                     }
                 }
                 
