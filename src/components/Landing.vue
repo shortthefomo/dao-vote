@@ -684,6 +684,7 @@
                         for (let item = 0; item < this.signers.length; item++) {
                             if (this.signers[item].SignerEntry.Account === element.Account) {
                                 this.signers[item].SignerEntry.Registered = element.Registered
+                                this.signers[item].SignerEntry.UUID = element.UUID
                             }
                         }
                     }
