@@ -238,7 +238,8 @@
                     }
                     XummPayload.options = {
                         submit: false,
-                        signers: accounts
+                        signers: accounts,
+                        multisign: true
                     }
                 }
                 console.log('Xumm Payload', XummPayload)
@@ -676,7 +677,7 @@
                     }
                     // console.log('Payload', Payload)
                     const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/isregistered?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-                    // console.log('isregistered', data)
+                    console.log('isregistered', data)
                     //Registered
                     for (let index = 0; index < data.length; index++) {
                         const element = data[index]
