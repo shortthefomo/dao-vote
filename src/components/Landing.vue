@@ -228,7 +228,7 @@
                     const Payload = {
                         Signers: this.signers,
                         Tx: payload,
-                        SignerQuorum: $store.getters.getSignerList(0).SignerQuorum
+                        SignerQuorum: this.$store.getters.getSignerList(0).SignerQuorum
                     }
                     const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/push-transaction?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                     console.log(data)
