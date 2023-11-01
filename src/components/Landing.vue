@@ -239,7 +239,7 @@
                         'ledger_index': 'current'
                     })
                     console.log(info)
-                    payload.Sequence = info.account_info.Sequence
+                    payload.Sequence = info.account_data.Sequence
 
                     console.log('SubmitVote')
                     const headers = { 'Content-Type': 'application/json; charset=utf-8' }
