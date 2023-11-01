@@ -224,7 +224,7 @@
             async submitVote(payload) {
                 if (this.$store.getters.getAccount === 'rMzF7b9QzZ2FXfHtArp1ezvoRsJkbCDmvC') {
 
-                    const result = await client.send({
+                    const result = await this.client.send({
                         'command': 'server_info'
                     })
                     // log(result)
