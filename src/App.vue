@@ -96,19 +96,6 @@
                 await this.jwtSignIn()
                 this.currentLedger()
             },
-            async getUUID(uuid) {
-                const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${uuid}`)
-                console.log('heyy 22222')
-                console.log(data)
-                if ('response' in data && 'user' in data.response) {
-                    this.$store.dispatch('setUserUUID', data.response.user)
-                    this.$store.dispatch('setUserToken', data.application.issued_user_token)
-                    // console.log('Set User Token', data.response.user)
-                }
-                const payload = await this.Sdk.payload.get(uuid)
-                console.log('heyy 3333')
-                console.log(payload)
-            },
             async jwtSignIn() {
                 const self = this
                 const request  = { txjson: { TransactionType: 'SignIn' }}
@@ -122,7 +109,13 @@
                         console.log('hey hey hey')
                         console.log(event.data)
                         self.signedIn = true
-                        await self.getUUID(event.data.payload_uuidv4)
+                        
+                        const data = await this.Sdk.payload.get(uuid)
+                        if ('response' in data && 'user' in data.response) {
+                            this.$store.dispatch('setUserUUID', data.response.user)
+                            this.$store.dispatch('setUserToken', data.application.issued_user_token)
+                            // console.log('Set User Token', data.response.user)
+                        }
                         self.components.Landing = true
                         return event.data
                     }
