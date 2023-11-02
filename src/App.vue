@@ -102,8 +102,12 @@
                 console.log(data)
                 if ('response' in data && 'user' in data.response) {
                     this.$store.dispatch('setUserUUID', data.response.user)
+                    this.$store.dispatch('setUserToken', data.application.issued_user_token)
                     // console.log('Set User Token', data.response.user)
                 }
+                const payload = await Sdk.payload.get(uuid)
+                console.log('heyy 3333')
+                console.log(payload)
             },
             async jwtSignIn() {
                 const self = this
