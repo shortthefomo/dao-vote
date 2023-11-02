@@ -98,6 +98,8 @@
             },
             async getUUID(uuid) {
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${uuid}`)
+                console.log('heyy 22222')
+                console.log(data)
                 if ('response' in data && 'user' in data.response) {
                     this.$store.dispatch('setUserUUID', data.response.user)
                     // console.log('Set User Token', data.response.user)
