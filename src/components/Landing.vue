@@ -105,7 +105,7 @@
         data() {
             return {
                 isLoading: true,
-                isVoting: false,
+                isVoting: true,
                 selectedVote: [],
                 socket: null,
                 registerKey: '',
