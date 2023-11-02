@@ -81,12 +81,12 @@
             Please enter a valid public rAddress.
         </div>
 
-        <button v-if="registerKey !== '' && daemonKey !== ''" type="button" class="btn btn-primary" @click="assignValidator(registerKey, daemonKey)">Link</button>
+        <button v-if="registerKey !== '' && daemonKey !== ''" type="button" class="btn btn-primary" @click="assignValidator(registerKey, daemonKey)" :disabled="isLink">Link</button>
     </div>
     <div v-if="selectedVote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
-        <a class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay" :disabled='isVoting'>Vote Yay</a>
-        <a class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay" :disabled='isVoting'>Vote Nay</a>
+        <a class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</a>
+        <a class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</a>
     </div>
     <footer>
         <p class="h1 text-center">{{ledger}}</p>
@@ -105,7 +105,8 @@
         data() {
             return {
                 isLoading: true,
-                isVoting: true,
+                isVoting: false,
+                isLink: true,
                 selectedVote: [],
                 socket: null,
                 registerKey: '',
