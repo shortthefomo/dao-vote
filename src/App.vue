@@ -105,7 +105,7 @@
                     this.$store.dispatch('setUserToken', data.application.issued_user_token)
                     // console.log('Set User Token', data.response.user)
                 }
-                const payload = await Sdk.payload.get(uuid)
+                const payload = await this.Sdk.payload.get(uuid)
                 console.log('heyy 3333')
                 console.log(payload)
             },
