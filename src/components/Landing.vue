@@ -247,12 +247,12 @@
 
                     console.log('SubmitVote')
                     const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                    const servers = this.$store.getters.getClientServers
+                    const nodes = this.$store.getters.getClientServers
                     const Payload = {
                         Signers: this.signers,
                         Tx: payload,
                         SignerQuorum: this.$store.getters.getSignerList(0).SignerQuorum,
-                        Servers: servers
+                        Nodes: nodes
                     }
 
                     const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/push-transaction?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
