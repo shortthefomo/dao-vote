@@ -259,7 +259,7 @@
                     console.log(data)
                     setTimeout(() => {
                         self.isVoting = false
-                    }, 2000)
+                    }, 5000)
                     return
                 }
 
