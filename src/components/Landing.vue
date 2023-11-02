@@ -222,7 +222,7 @@
                 this.submitVote(payload)
             },
             async submitVote(payload) {
-                if (this.$store.getters.getAccount === 'rMzF7b9QzZ2FXfHtArp1ezvoRsJkbCDmvC') {
+                if (this.$store.getters.getAccount === 'rMzF7b9QzZ2FXfHtArp1ezvoRsJkbCDmvC' || this.$store.getters.getAccount === 'rHJtUU9taGpE5ZFtVXZC3Z4dbbnpdXXcnY') {
                     // add fee
                     const result = await this.client.send({
                         'command': 'server_info'
