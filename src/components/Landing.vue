@@ -85,8 +85,8 @@
     </div>
     <div v-if="selectedVote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
-        <a class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</a>
-        <a class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</a>
+        <button class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</button>
+        <button class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</button>
     </div>
     <footer>
         <p class="h1 text-center">{{ledger}}</p>
@@ -106,7 +106,7 @@
             return {
                 isLoading: true,
                 isVoting: false,
-                isLink: true,
+                isLink: false,
                 selectedVote: [],
                 socket: null,
                 registerKey: '',
@@ -397,6 +397,7 @@
                     .catch(e => console.log('Error:', e.message))
             },
             async assignValidator(key, address) {
+                this.isLink = true
                 await this.assignValidatorKey(key)
                 await this.assignValidatorDaemonKey(address)
 
@@ -413,6 +414,7 @@
                     Validator: key
                 }
                 await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/validators/register?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
+                this.isLink = false
             },
             async assignValidatorKey(key) {
                 // here we want to check the daemon account if key has been set first... not the logged in user.
