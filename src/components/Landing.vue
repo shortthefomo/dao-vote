@@ -85,8 +85,8 @@
     </div>
     <div v-if="selectedVote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
-        <a class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay">Vote Yay</a>
-        <a class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay">Vote Nay</a>
+        <a class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay" :disabled='isVoting'>Vote Yay</a>
+        <a class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay" :disabled='isVoting'>Vote Nay</a>
     </div>
     <footer>
         <p class="h1 text-center">{{ledger}}</p>
@@ -105,6 +105,7 @@
         data() {
             return {
                 isLoading: true,
+                isVoting: false,
                 selectedVote: [],
                 socket: null,
                 registerKey: '',
@@ -178,6 +179,7 @@
         },
         methods: {
             async voteYay() {
+                this.isVoting = true
                 console.log('voteYay', this.selectedVote)
                 if (this.decoded_keys[this.validatorKey] === undefined) {
                     console.log(`this validators key has not been decoded key ${this.validatorKey}`)
@@ -200,6 +202,7 @@
                 this.submitVote({ txjson: payload })
             },
             async voteNay() {
+                this.isVoting = true
                 console.log('voteNay', this.selectedVote)
                 if (this.decoded_keys[this.validatorKey] === undefined) {
                     console.log(`this validators key has not been decoded key ${this.validatorKey}`)
@@ -222,6 +225,7 @@
                 this.submitVote(payload)
             },
             async submitVote(payload) {
+                const self = this
                 if (this.signers.length > 0) {
                     // add fee
                     const result = await this.client.send({
@@ -252,6 +256,9 @@
 
                     const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/push-transaction?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
                     console.log(data)
+                    setTimeout(() => {
+                        self.isVoting = false
+                    }, 2000)
                     return
                 }
 
@@ -262,7 +269,6 @@
                     }
                 }
 
-                const self = this
                 const subscription = await this.Sdk.payload.createAndSubscribe(payload, async event => {
                     console.log('New payload event:', event.data)
 
@@ -285,6 +291,8 @@
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
                     })
                     .catch(e => console.log('Error:', e.message))
+
+                this.isVoting = false
             },
             async unLinkAccount() {
                 const headers = { 'Content-Type': 'application/json; charset=utf-8' }
