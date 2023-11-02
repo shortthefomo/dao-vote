@@ -124,6 +124,8 @@
                         self.signedIn = true
                         
                         const data = await this.Sdk.payload.get(uuid)
+                        console.log('datadatadata')
+                        console.log(data)
                         if ('response' in data && 'user' in data.response) {
                             this.$store.dispatch('setUserUUID', data.response.user)
                             this.$store.dispatch('setUserToken', data.application.issued_user_token)
