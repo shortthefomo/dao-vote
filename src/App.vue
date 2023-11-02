@@ -99,7 +99,7 @@
             async getUUID(uuid) {
                 const {data} = await this.axios.get(`https://vote-backend.panicbot.xyz/api/v1/apps/payload_uuid?appkey=${import.meta.env.VITE_XUMM_APPKEY}&uuid=${uuid}`)
                 if ('response' in data && 'user' in data.response) {
-                    this.$store.dispatch('setUserToken', data.response.user)
+                    this.$store.dispatch('setUserUUID', data.response.user)
                     // console.log('Set User Token', data.response.user)
                 }
             },
@@ -113,6 +113,8 @@
 
                     if (event.data.signed === true) {
                         console.log('Woohoo! The sign request was signed :)')
+                        console.log('hey hey hey')
+                        console.log(event.data)
                         self.signedIn = true
                         await self.getUUID(event.data.payload_uuidv4)
                         self.components.Landing = true

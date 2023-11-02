@@ -15,6 +15,7 @@ export const AppStore = {
         account_data: {},
         signer_lists: [],
         user_token: '',
+        user_uuid: '',
         ledger: 0,
         data: {}
     }),
@@ -24,6 +25,9 @@ export const AppStore = {
         },
         setUserToken({commit}, user_token) {
             commit('USER_TOKEN', user_token)
+        },
+        setUserUUID({commit}, uuid) {
+            commit('UUID', uuid)
         },
         setAccount({commit}, account) {
             commit('ACCOUNT', account)
@@ -59,6 +63,9 @@ export const AppStore = {
         },
         USER_TOKEN(state, user_token) {
             state.user_token = user_token
+        },
+        UUID(state, uuid) {
+            state.user_uuid = uuid
         },
         LEDGER(state, ledger) {
             state.ledger = ledger
@@ -100,6 +107,9 @@ export const AppStore = {
         },
         getUserToken: state => {
             return state.user_token
+        },
+        getUserUUID: state => {
+            return state.user_uuid
         },
         getAccount: state => {
             return state.account

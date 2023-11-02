@@ -123,6 +123,7 @@
             }
         },
         async mounted() {
+            return 
             console.log('landing mounted...')
             // await this.fetchStorage()
             if (this.$store.getters.getAccount === '') {
