@@ -122,15 +122,13 @@
                         console.log('hey hey hey')
                         console.log(event.data)
                         self.signedIn = true
-                        
-                        const data = await this.Sdk.payload.get(uuid)
-                        console.log('datadatadata')
-                        console.log(data)
+                        const data = await this.Sdk.payload.get(event.data.payload_uuidv4)
                         if ('response' in data && 'user' in data.response) {
                             this.$store.dispatch('setUserUUID', data.response.user)
                             this.$store.dispatch('setUserToken', data.application.issued_user_token)
                             console.log('Set User Token', data.application.issued_user_token)
                         }
+
                         self.components.Landing = true
                         return event.data
                     }
