@@ -121,7 +121,8 @@
                 client: null,
                 masterKey: true,
                 regularKey: false,
-                signerList: false
+                signerList: false,
+                messageKey: ''
             }
         },
         async mounted() {
@@ -422,7 +423,9 @@
 
                 if (data !== undefined && 'decoded' in data && !('error' in data)) {
                     console.log('keys', data.decoded, key)
-                    this.submitMessageKey(data.decoded, key)
+                    if (this.messageKey === '') {
+                        this.submitMessageKey(data.decoded, key)
+                    }
                     this.validatorKeyValid = true
                 }
                 else {
@@ -617,8 +620,7 @@
                         console.log('keys', data.encoded, res.account_data.MessageKey)
                         this.decoded_keys[data.encoded] = data.encoded
                         console.log('ValidatorKey as set on MessageKey', data.encoded)
-                        // this.validatorKeyValid = true
-                        // this.validatorKey = data.encoded
+                        this.messageKey = data.encoded
                         await this.waitForOpenConnection(this.socket)
                         this.socket.send(JSON.stringify({
                             op: 'subscribe',
@@ -626,6 +628,12 @@
                         }))
                         console.log('subscribed to socket', data.encoded)
                     }
+                    else {
+                        this.messageKey = ''
+                    }
+                }
+                else {
+                    this.messageKey = ''
                 }
                 
                 this.$store.dispatch('setAccountData', res.account_data)
