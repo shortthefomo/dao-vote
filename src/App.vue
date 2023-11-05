@@ -2,13 +2,6 @@
     <main class="container">
         <Landing v-if="components.Landing" :client="client" :Sdk="Sdk" :nodetype="nodetype">{DAO VOTE}</Landing>
     </main>
-
-    <!-- <footer class="container footer mb-2 mt-auto">
-        <div class="border-top py-3">
-            &copy; Three
-            <Refs />
-        </div>
-    </footer> -->
 </template>
 
 <script>
@@ -39,14 +32,6 @@
         async mounted() {
             console.log('in we go.')
             await this.jwtFlow()
-
-            // if (this.components.Landing) { return }
-            
-            // this.components.Landing = true
-            // if (this.$store.getters.getAccount == 'rNbDBfxEpSV2G9Y8Qbvsn4mEZ98DafkpxK') {
-            //     this.components.Landing = false
-            // }
-            
         },
         methods: {
             currentLedger() {
@@ -99,8 +84,6 @@
             async jwtSignIn() {
                 const self = this
                 const request  = { txjson: { TransactionType: 'SignIn' }}
-                // const subscription = await this.Sdk.payload.create(request)
-
                 const subscription = await this.Sdk.payload.createAndSubscribe(request, async event => {
                     console.log('New payload event:', event.data)
 
@@ -140,10 +123,7 @@
                         console.log('openSignRequest response:', d instanceof Error ? d.message : d)
                     })
                     .catch(e => console.log('Error:', e.message))
-            },
-            // test(key) {
-            //     return Buffer.from(codec.decodeNodePublic(key)).toString('hex').toUpperCase()
-            // },
+            }
         }
     }
 </script>

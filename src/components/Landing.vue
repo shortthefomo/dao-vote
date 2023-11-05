@@ -438,13 +438,6 @@
                 if (data !== undefined && 'isValidAddress' in data && !('error' in data)) {
                     this.validatorDaemonValid = data.isValidAddress
                 }
-
-                // const headers = { 'Content-Type': 'application/json; charset=utf-8' }
-                // const Payload = {
-                //     Daemon: key
-                // }
-                // const {data} = await this.axios.post(`https://vote-backend.panicbot.xyz/api/v1/apps/multisig/validatorDaemon?appkey=${import.meta.env.VITE_XUMM_APPKEY}`, JSON.stringify(Payload), { headers })
-
             },
             highlights(amendment) {
                 if (this.selectedVote.includes(amendment.hash)) {
