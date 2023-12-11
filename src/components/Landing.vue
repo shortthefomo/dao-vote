@@ -6,10 +6,10 @@
                 <p class="text-muted text-end fs-6"><span class="fancy-font">DAO VOTE</span> by three</p>
             </div>
             <div class="col-md-12 fs-6">
-                <p class="text">
+                <p v-if="daemonKey !== ''" class="text">
                     Validator: {{ validatorKey.substring(0, 8) }}...
                 </p>
-                <p class="text">
+                <p v-if="daemonKey !== ''" class="text small">
                     Daemon: {{ daemonKey.substring(0, 8) }}...
                 </p>
                 <p v-if="validatorData !== null" class="text text-break">
