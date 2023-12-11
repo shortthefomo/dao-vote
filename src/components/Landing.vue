@@ -39,7 +39,7 @@
                 <p v-for="signer in signers">
                     <i :class="(signer.SignerEntry.Registered) ? 'bi bi-check-square-fill':'bi bi-dash-square-dotted'"></i> <i :class="`bi bi-${signer.SignerEntry.SignerWeight}-square${(signer.SignerEntry.Registered) ? '-fill':''}`"></i> {{ signer.SignerEntry.Account.substring(0, 8) }}...
                 </p>
-                <button v-if="validatorKey !== ''" type="button" class="btn btn-secondary" @click="unLinkAccount()">Unlink</button>
+                <button v-if="validatorKey !== ''" type="button" class="btn btn-secondary p-3" @click="unLinkAccount()">Unlink</button>
             </div>
         </div>
     </div>
