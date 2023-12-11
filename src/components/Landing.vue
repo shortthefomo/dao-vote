@@ -56,7 +56,7 @@
                 <tbody>
                     <tr v-for="row in votes" @click="selectedRow(row)" :class="highlights(row)">
                         <td><span class="px-2 py-1">{{ row.label }}</span></td>
-                        <td><span :class="(row.flag === 'yay') ? 'bg-green text-light px-2 py-1': 'bg-pink text-light px-2 py-1'">{{ row.flag }}</span></td>
+                        <td><span :class="(row.flag === 'yay') ? 'bg-yay text-light px-2 py-1': 'bg-nay text-light px-2 py-1'">{{ row.flag }}</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -83,10 +83,10 @@
 
         <button v-if="registerKey !== '' && daemonKey !== ''" type="button" class="btn btn-primary" @click="assignValidator(registerKey, daemonKey)" :disabled="isLink">Link</button>
     </div>
-    <div v-if="selectedVote.length > 0">
+    <div v-if="selectedVote.length > 0" class="text-center">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
-        <button class="btn btn-green p-3 m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</button>
-        <button class="btn btn-pink p-3 m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</button>
+        <button class="btn btn-yay p-3 m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</button>
+        <button class="btn btn-nay p-3 m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</button>
     </div>
     <footer>
         <p class="h1 text-center">{{ledger}}</p>
@@ -764,6 +764,12 @@
     .fancy-font {
         font-family: 'Permanent Marker', serif;
     }
+    .bg-yay {
+        background-color: #3BDC96;
+    }
+    .bg-nay {
+        background-color: #FF5B5B;
+    }
     .bg-green {
         background-color: #00e56a;
     }
@@ -794,6 +800,15 @@
 
     .btn-green {
         background-color: #00e56a;
+        color: #ffffff;
+    }
+
+    .btn-yay {
+        background-color: #3BDC96;
+        color: #ffffff;
+    }
+    .btn-nay {
+        background-color: #FF5B5B;
         color: #ffffff;
     }
 
