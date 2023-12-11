@@ -81,7 +81,7 @@
             Please enter a valid public rAddress.
         </div>
 
-        <button v-if="registerKey !== '' && daemonKey !== ''" type="button" class="btn btn-primary" @click="assignValidator(registerKey, daemonKey)" :disabled="isLink">Link</button>
+        <button v-if="registerKey !== '' && daemonKey !== ''" type="button" class="btn btn-primary p-3" @click="assignValidator(registerKey, daemonKey)" :disabled="isLink">Link</button>
     </div>
     <div v-if="selectedVote.length > 0" class="text-center">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
