@@ -85,8 +85,8 @@
     </div>
     <div v-if="selectedVote.length > 0">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
-        <button class="btn btn-green m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</button>
-        <button class="btn btn-pink m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</button>
+        <button class="btn btn-green p-3 m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</button>
+        <button class="btn btn-pink p-3 m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</button>
     </div>
     <footer>
         <p class="h1 text-center">{{ledger}}</p>
