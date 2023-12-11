@@ -9,7 +9,7 @@
                 <p v-if="daemonKey !== ''" class="text">
                     Validator: {{ validatorKey.substring(0, 8) }}...
                 </p>
-                <p v-if="daemonKey !== ''" class="text small">
+                <p v-if="daemonKey !== ''" class="text">
                     Daemon: {{ daemonKey.substring(0, 8) }}...
                 </p>
                 <p v-if="validatorData !== null" class="text text-break">
