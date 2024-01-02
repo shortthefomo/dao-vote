@@ -504,11 +504,12 @@
                     }
 
                     const data  = JSON.parse(message.data)
-                    // console.log('data', data)
+                    
                     const validator = self.validatorKey
+                    console.log('key', validator)
                     if (data[validator] !== undefined) {
                         self.validatorData = data[validator]
-                        // console.log(self.validatorData)
+                        console.log('data', data[validator])
                         self.votes = []
                         for (const [key, value] of Object.entries(self.validatorData.votable_amendments.nay)) {
                             self.votes.push({
