@@ -487,7 +487,7 @@
                 }
                 
                 this.socket.onopen = async function (message) {
-                    console.log('sub key', self.$store.getters.getAccount)
+                    // console.log('sub key', self.$store.getters.getAccount)
                     await self.waitForOpenConnection(self.socket)
                     self.socket.send(JSON.stringify({
                         op: 'subscribe',
@@ -625,6 +625,7 @@
                     }
                     else {
                         this.messageKey = ''
+                        console.log('ValidatorKey NOT set on MessageKey')
                     }
                 }
                 else {
