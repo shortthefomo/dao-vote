@@ -487,6 +487,7 @@
                 }
                 
                 this.socket.onopen = async function (message) {
+                    console.log('sub key', self.$store.getters.getAccount)
                     await self.waitForOpenConnection(self.socket)
                     self.socket.send(JSON.stringify({
                         op: 'subscribe',
