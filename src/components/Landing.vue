@@ -630,6 +630,7 @@
                 }
                 else {
                     this.messageKey = ''
+                    console.log('ValidatorKey NOT set on MessageKey')
                 }
                 
                 this.$store.dispatch('setAccountData', res.account_data)
