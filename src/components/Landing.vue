@@ -80,10 +80,13 @@
 
         <button v-if="registerKey !== '' && daemonKey !== ''" type="button" class="btn btn-primary p-3" @click="assignValidator(registerKey, daemonKey)" :disabled="isLink">Link</button>
     </div>
-    <div v-if="selectedVote.length > 0" class="text-center">
+    <div v-if="validatorData.latest_version === true && selectedVote.length > 0" class="text-center">
         <p class="ms-2">Cast your vote on your validator for the selected amendments</p>
         <button class="btn btn-yay p-3 m-2" @click="voteYay" role="button" id="voteYay" :disabled="isVoting">Vote Yay</button>
         <button class="btn btn-nay p-3 m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</button>
+    </div>
+    <div v-else-if="selectedVote.length > 0" class="text-center">
+        <p>your validator need to be updated before voting from the app can take place.</p>
     </div>
     <footer>
         <p class="h1 text-center">{{ledger}}</p>
