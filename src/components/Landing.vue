@@ -21,12 +21,6 @@
                 <p v-if="validatorData !== null" class="text">
                     Ledger Index: {{ validatorData.ledger_index }}
                 </p>
-                <!-- <p v-if="validatorData !== null" class="text">
-                    Base Fee: {{ validatorData.base_fee }}
-                </p>
-                <p v-if="validatorData !== null" class="text">
-                    Load Fee: {{ validatorData.load_fee }}
-                </p> -->
                 <p v-if="validatorData !== null" class="text">
                     State: {{ validatorData.state }}
                 </p>
@@ -46,7 +40,7 @@
             </div>
         </div>
     </div>
-    <div v-if="validatorData !== null $$ messageKey !== '' && validatorKey !== ''" class="py-5 mb-4">
+    <div v-if="validatorData !== null && messageKey !== '' && validatorKey !== ''" class="py-5 mb-4">
         <h1 class="display-5 fw-bold">Voting Status</h1>
         <div class="container-fluid pb-5">
             <table class="table">
