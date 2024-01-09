@@ -34,7 +34,7 @@
                     Last seen: {{ secondsToString((Date.now() - validatorData.last_seen) / 1000).toString() }}
                 </p>
                 <p v-if="validatorData !== null && 'agreement_24h' in validatorData" class="text">
-                    Agreement 24h: {{ validatorData.agreement_24h }}
+                    Missed Ledgers 24h: {{ validatorData.agreement_24h }}
                 </p>
                 <p v-if="signers.length > 0">
                     SignerQuorum: {{ $store.getters.getSignerList(0).SignerQuorum }}
