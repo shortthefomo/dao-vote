@@ -33,6 +33,9 @@
                 <p v-if="validatorData !== null" class="text">
                     Last seen: {{ secondsToString((Date.now() - validatorData.last_seen) / 1000).toString() }}
                 </p>
+                <p v-if="validatorData !== null && 'agreement_24h' in validatorData" class="text">
+                    Agreement 24h: {{ validatorData.agreement_24h }}
+                </p>
                 <p v-if="signers.length > 0">
                     SignerQuorum: {{ $store.getters.getSignerList(0).SignerQuorum }}
                 </p>
@@ -43,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div v-if="validatorData !== null && validatorKey !== ''" class="py-5 mb-4">
+    <div v-if="validatorData !== null $$ messageKey !== '' && validatorKey !== ''" class="py-5 mb-4">
         <h1 class="display-5 fw-bold">Voting Status</h1>
         <div class="container-fluid pb-5">
             <table class="table">
