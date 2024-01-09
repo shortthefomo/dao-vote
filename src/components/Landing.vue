@@ -86,7 +86,7 @@
         <button class="btn btn-nay p-3 m-2" @click="voteNay" role="button" id="voteNay" :disabled="isVoting">Vote Nay</button>
     </div>
     <div v-if="validatorData !== null && validatorData.latest_version === false && selectedVote.length > 0" class="text-center">
-        <p>your validator need to be updated before voting from the app can take place.</p>
+        <p class="bg-warning"><strong>your validator needs to be updated before voting from the app can take place.</strong></p>
     </div>
     <footer>
         <p class="h1 text-center">{{ledger}}</p>
